@@ -218,6 +218,7 @@
     authToken = data.token;
     authUser = data.user;
     localStorage.setItem('vc_token', data.token);
+    updateUserDisplay();
     await loadDashboard();
     show('dashboard');
   }
