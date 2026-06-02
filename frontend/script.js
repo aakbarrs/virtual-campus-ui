@@ -79,10 +79,10 @@
       back_to_dashboard: "Back to dashboard",
       eyebrow_detail: "Class Details",
       title_detail: "Meeting Detail",
-      instructor: "Instructor",
       participants_count: "Participants",
       duration: "Duration",
       room: "Room",
+      instructor: "Dosen",
       joined: "Already joined",
       no_classes: "No matching classes found."
     },
