@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const { initDb } = require('./config/database');
@@ -13,6 +14,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+const frontendPath = path.join(__dirname, '..', '..', 'frontend');
+app.use(express.static(frontendPath));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);

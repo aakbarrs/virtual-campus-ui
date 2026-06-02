@@ -31,18 +31,64 @@
         </div>
       </div>
 
-      <section id="dashboard" class="screen active" data-screen="dashboard">
+      <section id="auth" class="screen active" data-screen="auth">
+        <div class="auth-deco"></div>
+        <div class="auth-header">
+          <div class="auth-logo">🎓</div>
+          <h1 class="auth-title">Virtual Campus</h1>
+          <p class="auth-subtitle">Platform Pembelajaran Online</p>
+        </div>
+
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-auth="login">Masuk</button>
+          <button class="auth-tab" data-auth="register">Daftar</button>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+          <div class="auth-error"></div>
+          <div class="auth-field">
+            <label for="loginEmail">Email</label>
+            <input id="loginEmail" type="email" placeholder="nama@email.com" required autocomplete="email" />
+          </div>
+          <div class="auth-field">
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="current-password" />
+          </div>
+          <button class="btn primary" type="submit">Masuk</button>
+          <p class="auth-switch">Belum punya akun? <a href="#" data-auth="register">Daftar sekarang</a></p>
+        </form>
+
+        <form id="registerForm" class="auth-form" hidden>
+          <div class="auth-error"></div>
+          <div class="auth-field">
+            <label for="regName">Nama Lengkap</label>
+            <input id="regName" type="text" placeholder="Nama Anda" required />
+          </div>
+          <div class="auth-field">
+            <label for="regEmail">Email</label>
+            <input id="regEmail" type="email" placeholder="nama@email.com" required autocomplete="email" />
+          </div>
+          <div class="auth-field">
+            <label for="regPassword">Password</label>
+            <input id="regPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="new-password" />
+          </div>
+          <button class="btn primary" type="submit">Daftar</button>
+          <p class="auth-switch">Sudah punya akun? <a href="#" data-auth="login">Masuk</a></p>
+        </form>
+      </section>
+
+      <section id="dashboard" class="screen" data-screen="dashboard">
         <div class="deco-blob deco-blob-1"></div>
         <div class="deco-blob deco-blob-2"></div>
 
         <header class="header">
           <div>
             <p class="eyebrow" id="dateDisplay">Selasa, 21 Mei</p>
-            <h1 class="title"><span data-i18n="greeting">Halo</span>, Akbar <span class="wave" aria-label="wave">👋</span></h1>
+            <h1 class="title"><span data-i18n="greeting">Halo</span>, <span id="userName">Akbar</span> <span class="wave" aria-label="wave">👋</span></h1>
             <p class="subtitle" data-i18n="dashboard_prompt">Siap untuk kelas hari ini?</p>
           </div>
-          <button class="avatar" aria-label="Buka profil pengguna">
-            <span>A</span>
+          <button class="avatar" id="avatarBtn" aria-label="Buka profil pengguna">
+            <span id="avatarLetter">A</span>
           </button>
         </header>
 

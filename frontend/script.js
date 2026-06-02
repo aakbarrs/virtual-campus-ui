@@ -4,6 +4,32 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
+  const API_BASE = window.location.origin;
+
+  /* -------------------- auth state -------------------- */
+  let authToken = localStorage.getItem('vc_token');
+  let authUser = null;
+
+  if (authToken) {
+    try {
+      const payload = JSON.parse(atob(authToken.split('.')[1]));
+      authUser = payload;
+    } catch { authToken = null; }
+  }
+
+  function isLoggedIn() { return !!authToken; }
+
+  function requireAuth() {
+    if (!isLoggedIn()) show('auth', { push: false });
+  }
+
+  function logout() {
+    authToken = null;
+    authUser = null;
+    localStorage.removeItem('vc_token');
+    show('auth', { push: false });
+  }
+
   /* -------------------- inline translations -------------------- */
   const translations = {
     id: {
@@ -169,13 +195,114 @@
 
   $langSelect?.addEventListener('change', updateDate);
 
+  /* -------------------- API helpers -------------------- */
+  async function api(path, options = {}) {
+    const headers = { 'Content-Type': 'application/json', ...options.headers };
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+    const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+    if (res.status === 401) {
+      logout();
+      throw new Error('Sesi berakhir, silakan masuk kembali');
+    }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
+  }
+
+  /* -------------------- auth actions -------------------- */
+  async function handleLogin(email, password) {
+    const data = await api('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password })
+    });
+    authToken = data.token;
+    authUser = data.user;
+    localStorage.setItem('vc_token', data.token);
+    await loadDashboard();
+    show('dashboard');
+  }
+
+  async function handleRegister(name, email, password) {
+    await api('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password })
+    });
+    toast('Akun berhasil dibuat, silakan masuk');
+    switchAuthTab('login');
+  }
+
+  async function loadDashboard() {
+    try {
+      const data = await api('/api/courses');
+      renderCourses(data.courses);
+    } catch { /* use fallback static data */ }
+  }
+
+  function renderCourses(courses) {
+    const list = $('#classList');
+    if (!list) return;
+    list.innerHTML = '';
+    courses.forEach(c => {
+      const icon = c.icon || '📚';
+      const sub = c.schedule || '';
+      let metaHtml = '';
+      let badgeHtml = '';
+      let btnHtml = '';
+
+      if (c.status === 'live') {
+        metaHtml = `<p class="meta" data-i18n="live_class">Meeting aktif sekarang • Bergabung segera</p>`;
+        badgeHtml = `<span class="badge badge-live"><span class="pulse"></span> <span data-i18n="live">Live</span></span>`;
+        btnHtml = `<button class="btn primary" data-action="goto" data-target="detail" data-i18n="join_now">Bergabung</button>`;
+      } else if (c.status === 'idle') {
+        metaHtml = `<p class="meta" data-i18n="no_meeting">Tidak ada meeting saat ini</p>`;
+        badgeHtml = `<span class="badge badge-idle"><span data-i18n="idle">Idle</span></span>`;
+        btnHtml = `<button class="btn ghost" data-action="goto" data-target="detail" data-i18n="view_detail">Lihat detail</button>`;
+      } else {
+        metaHtml = `<p class="meta">${sub} • ${c.participants} <span data-i18n="participants">peserta</span></p>`;
+        badgeHtml = `<span class="badge badge-soon">${sub.replace('Meeting pukul ', '')}</span>`;
+        btnHtml = `<button class="btn ghost" data-action="goto" data-target="detail" data-i18n="view_detail">Lihat detail</button>`;
+      }
+
+      const card = document.createElement('article');
+      card.className = 'card class-card';
+      card.dataset.status = c.status;
+      card.dataset.title = c.title;
+      card.dataset.icon = icon;
+      card.dataset.instructor = c.instructor;
+      card.dataset.participants = c.participants;
+      card.dataset.duration = c.duration;
+      card.dataset.room = c.room;
+      card.dataset.sub = sub;
+      card.innerHTML = `
+        <div class="card-shine"></div>
+        <div class="class-row">
+          <div class="class-icon${c.status === 'live' ? ' live' : ''}" aria-hidden="true"><span>${icon}</span></div>
+          <div class="class-info"><h3>${c.title}</h3>${metaHtml}</div>
+          ${badgeHtml}
+        </div>
+        ${btnHtml}
+      `;
+      list.appendChild(card);
+    });
+    applyFilter();
+    updateI18n();
+  }
+
   /* -------------------- screen navigation -------------------- */
   const screens = $$(".screen");
-  const history = ["dashboard"];
+  const initialScreen = isLoggedIn() ? 'dashboard' : 'auth';
+  const history = [initialScreen];
+
+  const PROTECTED = new Set(['dashboard', 'detail', 'prejoin']);
 
   function show(id, { push = true } = {}) {
     const target = document.getElementById(id);
     if (!target || target.classList.contains("active")) return;
+
+    if (PROTECTED.has(id) && !isLoggedIn()) {
+      show('auth', { push: false });
+      return;
+    }
 
     screens.forEach((s) => s.classList.remove("active"));
     target.classList.add("active");
@@ -197,6 +324,54 @@
     }
 
     if (target) show(target);
+  });
+
+  /* -------------------- auth tab toggle -------------------- */
+  function switchAuthTab(tab) {
+    $$('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.auth === tab));
+    const loginForm = $('#loginForm');
+    const registerForm = $('#registerForm');
+    if (loginForm) loginForm.hidden = tab !== 'login';
+    if (registerForm) registerForm.hidden = tab !== 'register';
+  }
+
+  document.addEventListener('click', (e) => {
+    const tabBtn = e.target.closest('.auth-tab');
+    if (tabBtn) switchAuthTab(tabBtn.dataset.auth);
+
+    const switchLink = e.target.closest('.auth-switch a');
+    if (switchLink) {
+      e.preventDefault();
+      switchAuthTab(switchLink.dataset.auth);
+    }
+  });
+
+  $('#loginForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = $('#loginEmail').value.trim();
+    const password = $('#loginPassword').value;
+    const errEl = $('#loginForm .auth-error');
+    try {
+      if (errEl) errEl.classList.remove('show');
+      await handleLogin(email, password);
+    } catch (err) {
+      if (errEl) { errEl.textContent = err.message; errEl.classList.add('show'); }
+    }
+  });
+
+  $('#registerForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = $('#regName').value.trim();
+    const email = $('#regEmail').value.trim();
+    const password = $('#regPassword').value;
+    const errEl = $('#registerForm .auth-error');
+    try {
+      if (errEl) errEl.classList.remove('show');
+      if (password.length < 6) throw new Error('Password minimal 6 karakter');
+      await handleRegister(name, email, password);
+    } catch (err) {
+      if (errEl) { errEl.textContent = err.message; errEl.classList.add('show'); }
+    }
   });
 
   function populateDetail(card) {
@@ -501,7 +676,25 @@
     phone.style.transition = "transform 0.3s ease";
   }
 
+  /* -------------------- avatar / logout -------------------- */
+  $('#avatarBtn')?.addEventListener('click', () => {
+    if (confirm('Keluar dari akun?')) logout();
+  });
+
+  function updateUserDisplay() {
+    if (authUser && authUser.name) {
+      const nameEl = $('#userName');
+      if (nameEl) nameEl.textContent = authUser.name;
+      const letter = $('#avatarLetter');
+      if (letter) letter.textContent = authUser.name.charAt(0).toUpperCase();
+    }
+  }
+
   /* -------------------- initial paint -------------------- */
+  if (isLoggedIn()) {
+    updateUserDisplay();
+    loadDashboard();
+  }
   updateI18n();
   applyFilter();
   window.translations = translations;
