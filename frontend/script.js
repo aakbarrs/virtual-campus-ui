@@ -297,7 +297,7 @@
   const initialScreen = isLoggedIn() ? 'dashboard' : 'loginScreen';
   const history = [initialScreen];
 
-  const PROTECTED = new Set(['dashboard', 'detail', 'prejoin']);
+  const PROTECTED = new Set(['dashboard', 'detail', 'prejoin', 'meetingLobby', 'meetingRoom']);
 
   function show(id, { push = true } = {}) {
     const target = document.getElementById(id);
@@ -570,10 +570,6 @@
     }
   }
 
-  // Start both devices on init (toggles are ON by default)
-  startMic();
-  startCam();
-
   toggles.forEach((btn) => {
     btn.addEventListener("click", async () => {
       const key = btn.dataset.toggle;
@@ -700,5 +696,395 @@
   }
   updateI18n();
   applyFilter();
+  /* ==================== MEETING / WEBRTC ==================== */
+  let socket = null;
+  let localStream = null;
+  const peerConnections = {};
+  const STUN = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+  let currentMeetingId = null;
+  let currentRoomId = null;
+  let meetTimerInterval = null;
+  let meetSeconds = 0;
+
+  /* ---------- API calls ---------- */
+  async function createMeeting(title) {
+    const data = await api('/api/meetings', {
+      method: 'POST',
+      body: JSON.stringify({ title })
+    });
+    return data.meeting;
+  }
+
+  async function getMeetingByCode(code) {
+    const data = await api(`/api/meetings/${code}`);
+    return data.meeting;
+  }
+
+  async function listActiveMeetings() {
+    const data = await api('/api/meetings');
+    return data.meetings;
+  }
+
+  async function endMeetingApi(id) {
+    await api(`/api/meetings/${id}/end`, { method: 'POST' });
+  }
+
+  /* ---------- Socket ---------- */
+  function connectSocket() {
+    if (socket?.connected) return;
+    socket = io({ auth: { token: authToken } });
+    socket.on('connect_error', (err) => {
+      console.warn('Socket connection error:', err.message);
+    });
+    setupSocketListeners();
+  }
+
+  function disconnectSocket() {
+    if (!socket) return;
+    socket.removeAllListeners();
+    socket.disconnect();
+    socket = null;
+  }
+
+  function setupSocketListeners() {
+    socket.on('room-joined', ({ roomId, participants }) => {
+      currentRoomId = roomId;
+      for (const p of participants) {
+        if (p.socketId !== socket.id) createPeerConnection(p.socketId, false);
+      }
+    });
+
+    socket.on('user-joined', ({ socketId, userId, name }) => {
+      createPeerConnection(socketId, false);
+      addRemoteTile(socketId, name);
+    });
+
+    socket.on('user-left', ({ socketId }) => {
+      if (peerConnections[socketId]) {
+        peerConnections[socketId].close();
+        delete peerConnections[socketId];
+      }
+      removeRemoteTile(socketId);
+      updatePeopleCount();
+    });
+
+    socket.on('offer', async ({ from, offer }) => {
+      await createPeerConnection(from, true);
+      try {
+        await peerConnections[from].setRemoteDescription(new RTCSessionDescription(offer));
+        const answer = await peerConnections[from].createAnswer();
+        await peerConnections[from].setLocalDescription(answer);
+        socket.emit('answer', { to: from, answer });
+      } catch (err) {
+        console.error('Error handling offer:', err);
+      }
+    });
+
+    socket.on('answer', async ({ from, answer }) => {
+      try {
+        if (peerConnections[from]?.currentRemoteDescription) return;
+        await peerConnections[from]?.setRemoteDescription(new RTCSessionDescription(answer));
+      } catch (err) {
+        console.error('Error handling answer:', err);
+      }
+    });
+
+    socket.on('ice-candidate', ({ from, candidate }) => {
+      try {
+        if (candidate && peerConnections[from]) {
+          peerConnections[from].addIceCandidate(new RTCIceCandidate(candidate));
+        }
+      } catch (err) {
+        console.error('Error adding ICE candidate:', err);
+      }
+    });
+  }
+
+  /* ---------- Peer Connections ---------- */
+  async function createPeerConnection(socketId, isInitiator) {
+    if (peerConnections[socketId]) return;
+    const pc = new RTCPeerConnection(STUN);
+    peerConnections[socketId] = pc;
+
+    if (localStream) {
+      localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
+    }
+
+    pc.onicecandidate = (e) => {
+      if (e.candidate) {
+        socket.emit('ice-candidate', { to: socketId, candidate: e.candidate });
+      }
+    };
+
+    pc.ontrack = (e) => {
+      const videoEl = document.getElementById(`remote-video-${socketId}`);
+      if (videoEl) {
+        videoEl.srcObject = e.streams[0];
+        videoEl.classList.add('active');
+        const avatar = document.getElementById(`remote-avatar-${socketId}`);
+        if (avatar) avatar.classList.add('hidden');
+      }
+    };
+
+    pc.oniceconnectionstatechange = () => {
+      if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'disconnected') {
+        pc.close();
+        delete peerConnections[socketId];
+      }
+    };
+
+    if (isInitiator) {
+      try {
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        socket.emit('offer', { to: socketId, offer });
+      } catch (err) {
+        console.error('Error creating offer:', err);
+      }
+    }
+  }
+
+  /* ---------- Remote Tiles ---------- */
+  function addRemoteTile(socketId, name) {
+    const grid = document.getElementById('meetGrid');
+    if (!grid || document.getElementById(`remote-tile-${socketId}`)) return;
+    const tile = document.createElement('div');
+    tile.className = 'meet-tile';
+    tile.id = `remote-tile-${socketId}`;
+    tile.innerHTML = `
+      <div class="meet-video-wrap">
+        <video id="remote-video-${socketId}" class="remote-video" autoplay playsinline></video>
+        <div class="meet-avatar-placeholder" id="remote-avatar-${socketId}">
+          <span class="meet-avatar-letter">${(name || '?').charAt(0).toUpperCase()}</span>
+        </div>
+      </div>
+      <div class="meet-tile-label">
+        <span>${name || 'Pengguna'}</span>
+      </div>
+    `;
+    grid.appendChild(tile);
+    updatePeopleCount();
+  }
+
+  function removeRemoteTile(socketId) {
+    const tile = document.getElementById(`remote-tile-${socketId}`);
+    if (tile) tile.remove();
+    updatePeopleCount();
+  }
+
+  function updatePeopleCount() {
+    const countEl = document.getElementById('meetPeopleCount');
+    if (!countEl) return;
+    const tiles = document.querySelectorAll('#meetGrid .meet-tile');
+    countEl.textContent = `👥 ${tiles.length}`;
+  }
+
+  /* ---------- Local Media ---------- */
+  async function startLocalMedia() {
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      const video = document.getElementById('localVideo');
+      if (video) {
+        video.srcObject = localStream;
+        video.classList.add('active');
+      }
+      const avatar = document.getElementById('localAvatar');
+      if (avatar) avatar.classList.add('hidden');
+      return true;
+    } catch (err) {
+      console.warn('Local media error:', err);
+      const video = document.getElementById('localVideo');
+      if (video) video.classList.remove('active');
+      return false;
+    }
+  }
+
+  function stopLocalMedia() {
+    if (localStream) {
+      localStream.getTracks().forEach(t => t.stop());
+      localStream = null;
+    }
+    const video = document.getElementById('localVideo');
+    if (video) {
+      video.srcObject = null;
+      video.classList.remove('active');
+    }
+    const avatar = document.getElementById('localAvatar');
+    if (avatar) avatar.classList.remove('hidden');
+  }
+
+  /* ---------- Meeting Actions ---------- */
+  async function enterMeetingRoom(meeting) {
+    currentMeetingId = meeting.id;
+    show('meetingRoom');
+    document.getElementById('meetCodeDisplay').textContent = meeting.code;
+
+    const letterEl = document.getElementById('localAvatar')?.querySelector('.meet-avatar-letter');
+    if (letterEl && authUser?.name) letterEl.textContent = authUser.name.charAt(0).toUpperCase();
+    const nameEl = document.getElementById('localTileName');
+    if (nameEl) nameEl.textContent = authUser?.name || 'Anda';
+
+    await startLocalMedia();
+    connectSocket();
+    socket.emit('join-room', { roomId: `meeting-${meeting.id}` });
+
+    startMeetTimer();
+  }
+
+  function startMeetTimer() {
+    meetSeconds = 0;
+    clearInterval(meetTimerInterval);
+    const el = document.getElementById('meetTimer');
+    meetTimerInterval = setInterval(() => {
+      meetSeconds++;
+      const m = String(Math.floor(meetSeconds / 60)).padStart(2, '0');
+      const s = String(meetSeconds % 60).padStart(2, '0');
+      if (el) el.textContent = `${m}:${s}`;
+    }, 1000);
+  }
+
+  function leaveMeeting() {
+    clearInterval(meetTimerInterval);
+    if (socket && currentMeetingId) {
+      socket.emit('leave-room', { roomId: `meeting-${currentMeetingId}` });
+    }
+    for (const id of Object.keys(peerConnections)) {
+      peerConnections[id].close();
+      delete peerConnections[id];
+    }
+    stopLocalMedia();
+    disconnectSocket();
+    document.querySelectorAll('[id^="remote-tile-"]').forEach(el => el.remove());
+    currentMeetingId = null;
+    currentRoomId = null;
+    show('meetingLobby');
+  }
+
+  /* ---------- Meeting Lobby ---------- */
+  async function loadActiveMeetings() {
+    try {
+      const meetings = await listActiveMeetings();
+      const container = document.getElementById('activeMeetingCards');
+      const empty = document.getElementById('noActiveMeetings');
+      if (!container) return;
+      container.innerHTML = '';
+      if (!meetings || meetings.length === 0) {
+        if (empty) empty.hidden = false;
+        return;
+      }
+      if (empty) empty.hidden = true;
+      meetings.forEach(m => {
+        const item = document.createElement('div');
+        item.className = 'active-meeting-item';
+        item.innerHTML = `
+          <div class="active-meeting-icon">📹</div>
+          <div class="active-meeting-info">
+            <h4>${m.title}</h4>
+            <p>oleh ${m.host_name}</p>
+          </div>
+          <div class="active-meeting-code">${m.code}</div>
+        `;
+        item.addEventListener('click', async () => {
+          try {
+            const meeting = await getMeetingByCode(m.code);
+            await enterMeetingRoom(meeting);
+          } catch (err) {
+            toast(err.message);
+          }
+        });
+        container.appendChild(item);
+      });
+    } catch (err) {
+      console.warn('Failed to load active meetings:', err);
+    }
+  }
+
+  /* ---------- Event Bindings ---------- */
+  /* Auto-load active meetings when meetingLobby becomes active */
+  const lobbyEl = document.getElementById('meetingLobby');
+  const lobbyObserver = new MutationObserver(() => {
+    if (lobbyEl?.classList.contains('active')) {
+      loadActiveMeetings();
+    }
+  });
+  if (lobbyEl) lobbyObserver.observe(lobbyEl, { attributes: true, attributeFilter: ['class'] });
+
+  document.getElementById('meetFab')?.addEventListener('click', () => {
+    if (!isLoggedIn()) {
+      toast('Silakan masuk terlebih dahulu');
+      return;
+    }
+    show('meetingLobby');
+  });
+
+  document.getElementById('createMeetingBtn')?.addEventListener('click', async () => {
+    const title = prompt('Judul Meeting:', 'Meeting Saya');
+    if (!title || !title.trim()) return;
+    try {
+      const meeting = await createMeeting(title.trim());
+      await enterMeetingRoom(meeting);
+    } catch (err) {
+      toast(err.message);
+    }
+  });
+
+  document.getElementById('joinMeetingBtn')?.addEventListener('click', async () => {
+    const input = document.getElementById('meetingCodeInput');
+    const code = input?.value.trim().toUpperCase();
+    if (!code) { toast('Masukkan kode meeting'); return; }
+    try {
+      const meeting = await getMeetingByCode(code);
+      await enterMeetingRoom(meeting);
+    } catch (err) {
+      toast(err.message);
+    }
+  });
+
+  document.getElementById('meetingCodeInput')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('joinMeetingBtn')?.click();
+  });
+
+  document.getElementById('meetLeaveBtn')?.addEventListener('click', () => {
+    if (currentMeetingId) {
+      endMeetingApi(currentMeetingId).catch(() => {});
+    }
+    leaveMeeting();
+  });
+
+  document.getElementById('meetShareBtn')?.addEventListener('click', () => {
+    const code = document.getElementById('meetCodeDisplay')?.textContent;
+    if (!code) return;
+    navigator.clipboard.writeText(code).then(() => {
+      toast('Kode meeting disalin: ' + code);
+    }).catch(() => {
+      toast('Kode meeting: ' + code);
+    });
+  });
+
+  /* Meeting room mic/cam toggles */
+  document.getElementById('meetMicBtn')?.addEventListener('click', () => {
+    if (!localStream) return;
+    const enabled = !document.getElementById('meetMicBtn')?.classList.contains('active');
+    localStream.getAudioTracks().forEach(t => t.enabled = enabled);
+    document.getElementById('meetMicBtn')?.classList.toggle('active', enabled);
+    document.getElementById('meetMicBtn')?.setAttribute('aria-pressed', enabled);
+    const dot = document.getElementById('localMicDot');
+    if (dot) dot.classList.toggle('muted', !enabled);
+  });
+
+  document.getElementById('meetCamBtn')?.addEventListener('click', () => {
+    if (!localStream) return;
+    const enabled = !document.getElementById('meetCamBtn')?.classList.contains('active');
+    localStream.getVideoTracks().forEach(t => t.enabled = enabled);
+    document.getElementById('meetCamBtn')?.classList.toggle('active', enabled);
+    document.getElementById('meetCamBtn')?.setAttribute('aria-pressed', enabled);
+    const video = document.getElementById('localVideo');
+    const avatar = document.getElementById('localAvatar');
+    if (video && avatar) {
+      video.classList.toggle('active', enabled);
+      avatar.classList.toggle('hidden', enabled);
+    }
+  });
+
   window.translations = translations;
 })();

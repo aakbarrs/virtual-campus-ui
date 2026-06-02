@@ -109,6 +109,16 @@ async function initDb() {
       joined_at   TEXT    DEFAULT (datetime('now')),
       UNIQUE(user_id, course_id)
     );
+
+    CREATE TABLE IF NOT EXISTS meetings (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      code        TEXT    NOT NULL UNIQUE,
+      title       TEXT    NOT NULL,
+      host_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      status      TEXT    DEFAULT 'active' CHECK(status IN ('active','ended')),
+      created_at  TEXT    DEFAULT (datetime('now')),
+      ended_at    TEXT    DEFAULT NULL
+    );
   `);
   saveDb();
   return api;
