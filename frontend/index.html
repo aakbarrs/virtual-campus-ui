@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="{{lang}}" data-i18n-lang="{{lang}}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Virtual Campus - Platform pembelajaran online interaktif" />
+  <meta name="theme-color" content="#5b21b6" />
+  <title>Virtual Campus - Platform Pembelajaran</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="stage">
+    <div class="phone" id="phone">
+      <div class="notch">
+        <div class="notch-sensor"></div>
+      </div>
+
+      <div class="status-bar">
+        <span class="time" id="clock">10:24</span>
+        <div class="status-icons">
+          <svg class="wifi-icon" viewBox="0 0 24 24" width="14" height="14">
+            <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+          </svg>
+          <span class="dot signal"></span>
+          <span class="dot signal sm"></span>
+          <span class="dot signal xs"></span>
+          <span class="battery"><span class="battery-fill"></span></span>
+        </div>
+      </div>
+
+      <section id="dashboard" class="screen active" data-screen="dashboard">
+        <div class="deco-blob deco-blob-1"></div>
+        <div class="deco-blob deco-blob-2"></div>
+
+        <header class="header">
+          <div>
+            <p class="eyebrow" id="dateDisplay">Selasa, 21 Mei</p>
+            <h1 class="title"><span data-i18n="greeting">Halo</span>, Akbar <span class="wave" aria-label="wave">👋</span></h1>
+            <p class="subtitle" data-i18n="dashboard_prompt">Siap untuk kelas hari ini?</p>
+          </div>
+          <button class="avatar" aria-label="Buka profil pengguna">
+            <span>A</span>
+          </button>
+        </header>
+
+        <nav class="lang-nav" aria-label="Pilih bahasa / Select language">
+          <select id="langSelect" aria-label="Pilih bahasa">
+            <option value="id" selected>Bahasa Indonesia</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+          </select>
+          <svg class="lang-chevron" viewBox="0 0 20 20" width="16" height="16">
+            <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"/>
+          </svg>
+        </nav>
+
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 18a8 8 0 1 1 5.29-2.29l4.7 4.7-1.42 1.42-4.7-4.7A7.96 7.96 0 0 1 10 18zM4 10a6 6 0 1 0 12 0A6 6 0 0 0 4 10z"/>
+          </svg>
+          <input class="search" id="search" type="search" data-i18n-placeholder="search_placeholder" placeholder="Cari kelas..." aria-label="Cari kelas" />
+        </div>
+
+        <div class="chips" role="tablist">
+          <button class="chip active" data-filter="all" role="tab" aria-selected="true"><span>📋</span> <span data-i18n="all">Semua</span></button>
+          <button class="chip" data-filter="live" role="tab" aria-selected="false"><span>🔴</span> <span data-i18n="live">Live</span></button>
+          <button class="chip" data-filter="upcoming" role="tab" aria-selected="false"><span>📅</span> <span data-i18n="upcoming">Akan datang</span></button>
+          <button class="chip" data-filter="idle" role="tab" aria-selected="false"><span>✅</span> <span data-i18n="idle">Selesai</span></button>
+        </div>
+
+        <div class="class-list" id="classList" role="region" aria-label="Daftar kelas">
+          <article class="card class-card"
+            data-status="live"
+            data-title="Praktikum IMK"
+            data-icon="🎨"
+            data-instructor="Ibu Sari Wulandari"
+            data-participants="24"
+            data-duration="90 menit"
+            data-room="Virtual A-201"
+            data-sub="Rapat mingguan • 10:00 — 11:30">
+            <div class="card-shine"></div>
+            <div class="class-row">
+              <div class="class-icon live" aria-hidden="true">
+                <span>🎨</span>
+              </div>
+              <div class="class-info">
+                <h3>Praktikum IMK</h3>
+                <p class="meta" data-i18n="live_class">Meeting aktif sekarang • Bergabung segera</p>
+              </div>
+              <span class="badge badge-live">
+                <span class="pulse"></span> <span data-i18n="live">Live</span>
+              </span>
+            </div>
+            <button class="btn primary" data-action="goto" data-target="detail" data-i18n="join_now">Bergabung</button>
+          </article>
+
+          <article class="card class-card"
+            data-status="idle"
+            data-title="Praktikum PBO"
+            data-icon="💻"
+            data-instructor="Bapak Adi Nugroho"
+            data-participants="22"
+            data-duration="90 menit"
+            data-room="Virtual B-101"
+            data-sub="">
+            <div class="card-shine"></div>
+            <div class="class-row">
+              <div class="class-icon" aria-hidden="true">
+                <span>💻</span>
+              </div>
+              <div class="class-info">
+                <h3>Praktikum PBO</h3>
+                <p class="meta" data-i18n="no_meeting">Tidak ada meeting saat ini</p>
+              </div>
+              <span class="badge badge-idle"><span data-i18n="idle">Idle</span></span>
+            </div>
+            <button class="btn ghost" data-action="goto" data-target="detail" data-i18n="view_detail">Lihat detail</button>
+          </article>
+
+          <article class="card class-card"
+            data-status="upcoming"
+            data-title="Algoritma Pemrograman"
+            data-icon="🧠"
+            data-instructor="Ibu Dewi Lestari"
+            data-participants="18"
+            data-duration="120 menit"
+            data-room="Virtual A-301"
+            data-sub="Meeting pukul 13:00">
+            <div class="card-shine"></div>
+            <div class="class-row">
+              <div class="class-icon" aria-hidden="true">
+                <span>🧠</span>
+              </div>
+              <div class="class-info">
+                <h3>Algoritma Pemrograman</h3>
+                <p class="meta">Meeting pukul 13:00 • 18 <span data-i18n="participants">peserta</span></p>
+              </div>
+              <span class="badge badge-soon">13:00</span>
+            </div>
+            <button class="btn ghost" data-action="goto" data-target="detail" data-i18n="view_detail">Lihat detail</button>
+          </article>
+
+          <article class="card class-card"
+            data-status="upcoming"
+            data-title="Basis Data"
+            data-icon="🗂️"
+            data-instructor="Bapak Rudi Hartono"
+            data-participants="20"
+            data-duration="90 menit"
+            data-room="Virtual A-401"
+            data-sub="Meeting pukul 15:30">
+            <div class="card-shine"></div>
+            <div class="class-row">
+              <div class="class-icon" aria-hidden="true">
+                <span>🗂️</span>
+              </div>
+              <div class="class-info">
+                <h3>Basis Data</h3>
+                <p class="meta">Meeting pukul 15:30 • Ruang virtual A</p>
+              </div>
+              <span class="badge badge-soon">15:30</span>
+            </div>
+            <button class="btn ghost" data-action="goto" data-target="detail" data-i18n="view_detail">Lihat detail</button>
+          </article>
+
+          <p class="empty" id="emptyState" data-i18n="no_classes" hidden>Tidak ada kelas yang cocok.</p>
+        </div>
+      </section>
+
+      <section id="detail" class="screen" data-screen="detail">
+        <header class="top">
+          <button class="back" data-action="goto" data-target="dashboard" aria-label="Kembali ke dashboard">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+          <div>
+            <p class="eyebrow" data-i18n="eyebrow_detail">Rincian Kelas</p>
+            <h1 class="title" data-i18n="title_detail">Detail Meeting</h1>
+          </div>
+        </header>
+
+        <div class="card hero" id="detailHero">
+          <div class="hero-bg"></div>
+          <div class="hero-head">
+            <div class="class-icon big" id="detailIcon" aria-hidden="true">
+              <span>🎨</span>
+            </div>
+            <span class="badge" id="detailBadge">
+              <span class="pulse"></span> <span data-i18n="live">Live</span>
+            </span>
+          </div>
+          <h2 class="hero-title" id="detailTitle">Praktikum IMK</h2>
+          <p class="hero-sub" id="detailSub">Rapat mingguan • 10:00 — 11:30</p>
+
+          <ul class="info-grid">
+            <li>
+              <span class="info-icon">👨‍🏫</span>
+              <span class="info-label" data-i18n="instructor">Dosen</span>
+              <span class="info-value" id="detailInstructor">Ibu Sari Wulandari</span>
+            </li>
+            <li>
+              <span class="info-icon">👥</span>
+              <span class="info-label" data-i18n="participants_count">Peserta</span>
+              <span class="info-value" id="detailParticipants">24 orang</span>
+            </li>
+            <li>
+              <span class="info-icon">⏱️</span>
+              <span class="info-label" data-i18n="duration">Durasi</span>
+              <span class="info-value" id="detailDuration">90 menit</span>
+            </li>
+            <li>
+              <span class="info-icon">📍</span>
+              <span class="info-label" data-i18n="room">Ruang</span>
+              <span class="info-value" id="detailRoom">Virtual A-201</span>
+            </li>
+          </ul>
+
+          <div class="participants">
+            <div class="avatars">
+              <span class="mini-avatar" style="--c:#a78bfa" title="Andi">A</span>
+              <span class="mini-avatar" style="--c:#f472b6" title="Siti">S</span>
+              <span class="mini-avatar" style="--c:#34d399" title="Doni">D</span>
+              <span class="mini-avatar" style="--c:#60a5fa" title="Mega">M</span>
+              <span class="mini-avatar more">+20</span>
+            </div>
+            <p class="meta" data-i18n="joined">Sudah bergabung</p>
+          </div>
+        </div>
+
+        <button class="btn primary" id="detailJoinBtn" data-action="goto" data-target="prejoin" data-i18n="join_now">Bergabung sekarang</button>
+        <button class="btn ghost" data-i18n="other_options">Opsi lainnya</button>
+      </section>
+
+      <section id="prejoin" class="screen" data-screen="prejoin">
+        <header class="top">
+          <button class="back" data-action="goto" data-target="detail" aria-label="Kembali ke detail">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+          <div>
+            <p class="eyebrow">Sebelum bergabung</p>
+            <h1 class="title" data-i18n="preparing_meeting">Persiapan Meeting</h1>
+            <p class="subtitle" data-i18n="check_mic_cam">Periksa mic dan kamera</p>
+          </div>
+        </header>
+
+        <div class="preview" id="preview">
+          <div class="preview-glow"></div>
+          <div class="preview-scanline"></div>
+          <video id="videoPreview" autoplay playsinline muted></video>
+          <div class="preview-avatar" id="previewAvatar">👤</div>
+          <span class="preview-tag" id="previewTag">Kamera aktif</span>
+          <div class="preview-corners"></div>
+        </div>
+
+        <div class="controls">
+          <button class="toggle on" data-toggle="mic" aria-pressed="true">
+            <span class="ico">🎙️</span>
+            <span class="lbl" data-i18n="mic">Mic</span>
+          </button>
+          <button class="toggle on" data-toggle="cam" aria-pressed="true">
+            <span class="ico">📷</span>
+            <span class="lbl" data-i18n="cam">Kamera</span>
+          </button>
+          <button class="toggle on" data-toggle="audio" aria-pressed="true">
+            <span class="ico">🔊</span>
+            <span class="lbl" data-i18n="audio">Audio</span>
+          </button>
+        </div>
+
+        <div class="device">
+          <div class="device-row">
+            <span class="device-label">
+              <span class="device-dot mic"></span>
+              <span data-i18n="device_microphone">Mikrofon</span>
+            </span>
+            <span class="device-value">MacBook Pro Mic</span>
+          </div>
+          <div class="device-row">
+            <span class="device-label">
+              <span class="device-dot cam"></span>
+              <span data-i18n="device_camera">Kamera</span>
+            </span>
+            <span class="device-value">FaceTime HD</span>
+          </div>
+        </div>
+
+        <button class="btn primary" id="joinBtn">
+          <span class="btn-shimmer"></span>
+          <span data-i18n="join_now">Gabung Meeting</span>
+        </button>
+      </section>
+
+      <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+        <span class="toast-icon">✓</span>
+        <span class="toast-msg"></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
