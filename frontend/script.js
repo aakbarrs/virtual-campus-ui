@@ -20,14 +20,14 @@
   function isLoggedIn() { return !!authToken; }
 
   function requireAuth() {
-    if (!isLoggedIn()) show('auth', { push: false });
+    if (!isLoggedIn()) show('loginScreen', { push: false });
   }
 
   function logout() {
     authToken = null;
     authUser = null;
     localStorage.removeItem('vc_token');
-    show('auth', { push: false });
+    show('loginScreen', { push: false });
   }
 
   /* -------------------- inline translations -------------------- */
@@ -228,7 +228,7 @@
       body: JSON.stringify({ name, email, password })
     });
     toast('Akun berhasil dibuat, silakan masuk');
-    switchAuthTab('login');
+    show('loginScreen');
   }
 
   async function loadDashboard() {
@@ -290,7 +290,7 @@
 
   /* -------------------- screen navigation -------------------- */
   const screens = $$(".screen");
-  const initialScreen = isLoggedIn() ? 'dashboard' : 'auth';
+  const initialScreen = isLoggedIn() ? 'dashboard' : 'loginScreen';
   const history = [initialScreen];
 
   const PROTECTED = new Set(['dashboard', 'detail', 'prejoin']);
@@ -300,7 +300,7 @@
     if (!target || target.classList.contains("active")) return;
 
     if (PROTECTED.has(id) && !isLoggedIn()) {
-      show('auth', { push: false });
+      show('loginScreen', { push: false });
       return;
     }
 
@@ -324,26 +324,6 @@
     }
 
     if (target) show(target);
-  });
-
-  /* -------------------- auth tab toggle -------------------- */
-  function switchAuthTab(tab) {
-    $$('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.auth === tab));
-    const loginForm = $('#loginForm');
-    const registerForm = $('#registerForm');
-    if (loginForm) loginForm.hidden = tab !== 'login';
-    if (registerForm) registerForm.hidden = tab !== 'register';
-  }
-
-  document.addEventListener('click', (e) => {
-    const tabBtn = e.target.closest('.auth-tab');
-    if (tabBtn) switchAuthTab(tabBtn.dataset.auth);
-
-    const switchLink = e.target.closest('.auth-switch a');
-    if (switchLink) {
-      e.preventDefault();
-      switchAuthTab(switchLink.dataset.auth);
-    }
   });
 
   $('#loginForm')?.addEventListener('submit', async (e) => {

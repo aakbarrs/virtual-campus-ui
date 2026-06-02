@@ -31,17 +31,12 @@
         </div>
       </div>
 
-      <section id="auth" class="screen active" data-screen="auth">
+      <section id="loginScreen" class="screen active" data-screen="loginScreen">
         <div class="auth-deco"></div>
         <div class="auth-header">
           <div class="auth-logo">🎓</div>
           <h1 class="auth-title">Virtual Campus</h1>
-          <p class="auth-subtitle">Platform Pembelajaran Online</p>
-        </div>
-
-        <div class="auth-tabs">
-          <button class="auth-tab active" data-auth="login">Masuk</button>
-          <button class="auth-tab" data-auth="register">Daftar</button>
+          <p class="auth-subtitle">Masuk ke akun Anda</p>
         </div>
 
         <form id="loginForm" class="auth-form">
@@ -55,10 +50,19 @@
             <input id="loginPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="current-password" />
           </div>
           <button class="btn primary" type="submit">Masuk</button>
-          <p class="auth-switch">Belum punya akun? <a href="#" data-auth="register">Daftar sekarang</a></p>
+          <p class="auth-switch">Belum punya akun? <a href="#" data-action="goto" data-target="registerScreen">Daftar sekarang</a></p>
         </form>
+      </section>
 
-        <form id="registerForm" class="auth-form" hidden>
+      <section id="registerScreen" class="screen" data-screen="registerScreen">
+        <div class="auth-deco"></div>
+        <div class="auth-header">
+          <div class="auth-logo">🎓</div>
+          <h1 class="auth-title">Virtual Campus</h1>
+          <p class="auth-subtitle">Buat akun baru</p>
+        </div>
+
+        <form id="registerForm" class="auth-form">
           <div class="auth-error"></div>
           <div class="auth-field">
             <label for="regName">Nama Lengkap</label>
@@ -73,7 +77,7 @@
             <input id="regPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="new-password" />
           </div>
           <button class="btn primary" type="submit">Daftar</button>
-          <p class="auth-switch">Sudah punya akun? <a href="#" data-auth="login">Masuk</a></p>
+          <p class="auth-switch">Sudah punya akun? <a href="#" data-action="goto" data-target="loginScreen">Masuk</a></p>
         </form>
       </section>
 
