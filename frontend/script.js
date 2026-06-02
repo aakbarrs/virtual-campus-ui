@@ -70,7 +70,8 @@
       duration: "Durasi",
       room: "Ruang",
       joined: "Sudah bergabung",
-      no_classes: "Tidak ada kelas yang cocok."
+      no_classes: "Tidak ada kelas yang cocok.",
+      logout: "Keluar"
     },
     en: {
       greeting: "Hello",
@@ -110,7 +111,8 @@
       room: "Room",
       instructor: "Dosen",
       joined: "Already joined",
-      no_classes: "No matching classes found."
+      no_classes: "No matching classes found.",
+      logout: "Log out"
     },
     es: {
       greeting: "Hola",
@@ -150,7 +152,8 @@
       duration: "Duración",
       room: "Sala",
       joined: "Ya te has unido",
-      no_classes: "No se encontraron clases coincidentes."
+      no_classes: "No se encontraron clases coincidentes.",
+      logout: "Cerrar sesión"
     }
   };
 
@@ -658,8 +661,23 @@
   }
 
   /* -------------------- avatar / logout -------------------- */
-  $('#avatarBtn')?.addEventListener('click', () => {
-    if (confirm('Keluar dari akun?')) logout();
+  const avatarBtn = $('#avatarBtn');
+  const profileDropdown = $('#profileDropdown');
+
+  avatarBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileDropdown?.classList.toggle('open');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (profileDropdown?.classList.contains('open') && !profileDropdown.contains(e.target) && e.target !== avatarBtn) {
+      profileDropdown.classList.remove('open');
+    }
+  });
+
+  $('#logoutBtn')?.addEventListener('click', () => {
+    profileDropdown?.classList.remove('open');
+    logout();
   });
 
   function updateUserDisplay() {
@@ -668,6 +686,10 @@
       if (nameEl) nameEl.textContent = authUser.name;
       const letter = $('#avatarLetter');
       if (letter) letter.textContent = authUser.name.charAt(0).toUpperCase();
+      const dName = $('#dropdownName');
+      if (dName) dName.textContent = authUser.name;
+      const dEmail = $('#dropdownEmail');
+      if (dEmail) dEmail.textContent = authUser.email || '';
     }
   }
 
