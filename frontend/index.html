@@ -33,52 +33,56 @@
 
       <section id="loginScreen" class="screen active" data-screen="loginScreen">
         <div class="auth-deco"></div>
-        <div class="auth-header">
-          <div class="auth-logo">🎓</div>
-          <h1 class="auth-title">Virtual Campus</h1>
-          <p class="auth-subtitle">Masuk ke akun Anda</p>
-        </div>
+        <div class="auth-inner">
+          <div class="auth-header">
+            <div class="auth-logo">🎓</div>
+            <h1 class="auth-title">Virtual Campus</h1>
+            <p class="auth-subtitle">Masuk ke akun Anda</p>
+          </div>
 
-        <form id="loginForm" class="auth-form">
-          <div class="auth-error"></div>
-          <div class="auth-field">
-            <label for="loginEmail">Email</label>
-            <input id="loginEmail" type="email" placeholder="nama@email.com" required autocomplete="email" />
-          </div>
-          <div class="auth-field">
-            <label for="loginPassword">Password</label>
-            <input id="loginPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="current-password" />
-          </div>
-          <button class="btn primary" type="submit">Masuk</button>
-          <p class="auth-switch">Belum punya akun? <a href="#" data-action="goto" data-target="registerScreen">Daftar sekarang</a></p>
-        </form>
+          <form id="loginForm" class="auth-form">
+            <div class="auth-error"></div>
+            <div class="auth-field">
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" type="email" placeholder="nama@email.com" required autocomplete="email" />
+            </div>
+            <div class="auth-field">
+              <label for="loginPassword">Password</label>
+              <input id="loginPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="current-password" />
+            </div>
+            <button class="btn primary" type="submit">Masuk</button>
+            <p class="auth-switch">Belum punya akun? <a href="#" data-action="goto" data-target="registerScreen">Daftar sekarang</a></p>
+          </form>
+        </div>
       </section>
 
       <section id="registerScreen" class="screen" data-screen="registerScreen">
         <div class="auth-deco"></div>
-        <div class="auth-header">
-          <div class="auth-logo">🎓</div>
-          <h1 class="auth-title">Virtual Campus</h1>
-          <p class="auth-subtitle">Buat akun baru</p>
-        </div>
+        <div class="auth-inner">
+          <div class="auth-header">
+            <div class="auth-logo">🎓</div>
+            <h1 class="auth-title">Virtual Campus</h1>
+            <p class="auth-subtitle">Buat akun baru</p>
+          </div>
 
-        <form id="registerForm" class="auth-form">
-          <div class="auth-error"></div>
-          <div class="auth-field">
-            <label for="regName">Nama Lengkap</label>
-            <input id="regName" type="text" placeholder="Nama Anda" required />
-          </div>
-          <div class="auth-field">
-            <label for="regEmail">Email</label>
-            <input id="regEmail" type="email" placeholder="nama@email.com" required autocomplete="email" />
-          </div>
-          <div class="auth-field">
-            <label for="regPassword">Password</label>
-            <input id="regPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="new-password" />
-          </div>
-          <button class="btn primary" type="submit">Daftar</button>
-          <p class="auth-switch">Sudah punya akun? <a href="#" data-action="goto" data-target="loginScreen">Masuk</a></p>
-        </form>
+          <form id="registerForm" class="auth-form">
+            <div class="auth-error"></div>
+            <div class="auth-field">
+              <label for="regName">Nama Lengkap</label>
+              <input id="regName" type="text" placeholder="Nama Anda" required />
+            </div>
+            <div class="auth-field">
+              <label for="regEmail">Email</label>
+              <input id="regEmail" type="email" placeholder="nama@email.com" required autocomplete="email" />
+            </div>
+            <div class="auth-field">
+              <label for="regPassword">Password</label>
+              <input id="regPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="new-password" />
+            </div>
+            <button class="btn primary" type="submit">Daftar</button>
+            <p class="auth-switch">Sudah punya akun? <a href="#" data-action="goto" data-target="loginScreen">Masuk</a></p>
+          </form>
+        </div>
       </section>
 
       <section id="dashboard" class="screen" data-screen="dashboard">
