@@ -32,7 +32,6 @@
       </div>
 
       <section id="loginScreen" class="screen active" data-screen="loginScreen">
-        <div class="auth-deco"></div>
         <div class="auth-inner">
           <div class="auth-header">
             <div class="auth-logo">🎓</div>
@@ -60,7 +59,6 @@
       </section>
 
       <section id="registerScreen" class="screen" data-screen="registerScreen">
-        <div class="auth-deco"></div>
         <div class="auth-inner">
           <div class="auth-header">
             <div class="auth-logo">🎓</div>
@@ -89,7 +87,6 @@
       </section>
 
       <section id="forgotPassword" class="screen" data-screen="forgotPassword">
-        <div class="auth-deco"></div>
         <div class="auth-inner">
           <div class="auth-header">
             <div class="auth-logo">🔑</div>
@@ -109,7 +106,6 @@
       </section>
 
       <section id="resetPassword" class="screen" data-screen="resetPassword">
-        <div class="auth-deco"></div>
         <div class="auth-inner">
           <div class="auth-header">
             <div class="auth-logo">🔐</div>
@@ -224,13 +220,10 @@
       </section>
 
       <section id="dashboard" class="screen" data-screen="dashboard">
-        <div class="deco-blob deco-blob-1"></div>
-        <div class="deco-blob deco-blob-2"></div>
-
         <header class="header">
           <div>
             <p class="eyebrow" id="dateDisplay">Selasa, 21 Mei</p>
-            <h1 class="title"><span data-i18n="greeting">Halo</span>, <span id="userName">Akbar</span> <span class="wave" aria-label="wave">👋</span></h1>
+            <h1 class="title"><span data-i18n="greeting">Halo</span>, <span id="userName">Akbar</span> 👋</h1>
             <p class="subtitle" data-i18n="dashboard_prompt">Siap untuk kelas hari ini?</p>
           </div>
           <div class="header-end">
@@ -239,18 +232,19 @@
             <button class="avatar" id="avatarBtn" aria-label="Buka profil pengguna">
               <span id="avatarLetter">A</span>
             </button>
-            <div class="dropdown" id="profileDropdown">
-              <div class="dropdown-header">
-                <span class="dropdown-name" id="dropdownName">Akbar</span>
-                <span class="dropdown-email" id="dropdownEmail">user@email.com</span>
-              </div>
-              <button class="dropdown-item" id="logoutBtn">
-                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M16 17v-3H9v-4h7V7l5 5-5 5M14 2a2 2 0 012 2v2h-2V4H5v16h9v-2h2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h9z" fill="currentColor"/></svg>
-                <span data-i18n="logout">Keluar</span>
-              </button>
-            </div>
           </div>
         </header>
+
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="profile-dropdown-header">
+            <span class="profile-dropdown-name" id="dropdownName">Akbar</span>
+            <span class="profile-dropdown-email" id="dropdownEmail">user@email.com</span>
+          </div>
+          <button class="profile-dropdown-item" id="logoutBtn">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M16 17v-3H9v-4h7V7l5 5-5 5M14 2a2 2 0 012 2v2h-2V4H5v16h9v-2h2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h9z" fill="currentColor"/></svg>
+            <span data-i18n="logout">Keluar</span>
+          </button>
+        </div>
 
         <div class="notif-dropdown" id="notifDropdown">
           <div class="notif-dropdown-header">
@@ -280,6 +274,60 @@
 
           <div class="notif-list" id="notifList">
             <p class="notif-empty" data-i18n="no_notifications">Tidak ada notifikasi.</p>
+          </div>
+        </div>
+
+        <div class="notif-detail" id="notifDetail">
+          <div class="notif-detail-header">
+            <button class="notif-detail-back" id="notifDetailBack">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+              </svg>
+            </button>
+            <span class="notif-detail-header-title" data-i18n="notification_detail">Detail Notifikasi</span>
+          </div>
+
+          <div class="notif-detail-body" id="notifDetailBody">
+            <div class="notif-detail-icon" id="notifDetailIcon">📢</div>
+            <h2 class="notif-detail-title" id="notifDetailTitle">-</h2>
+
+            <div class="notif-detail-meta">
+              <div class="notif-detail-meta-item">
+                <span class="notif-detail-meta-label" data-i18n="category">Kategori</span>
+                <span class="notif-detail-meta-value" id="notifDetailCategory">-</span>
+              </div>
+              <div class="notif-detail-meta-item">
+                <span class="notif-detail-meta-label" data-i18n="priority_label">Prioritas</span>
+                <span class="notif-detail-meta-value" id="notifDetailPriority">-</span>
+              </div>
+              <div class="notif-detail-meta-item">
+                <span class="notif-detail-meta-label" data-i18n="date_label">Tanggal</span>
+                <span class="notif-detail-meta-value" id="notifDetailDate">-</span>
+              </div>
+              <div class="notif-detail-meta-item">
+                <span class="notif-detail-meta-label" data-i18n="role">Role</span>
+                <span class="notif-detail-meta-value" id="notifDetailRole">-</span>
+              </div>
+            </div>
+
+            <div class="notif-detail-section">
+              <h3 class="notif-detail-section-title" data-i18n="full_message">Isi Lengkap</h3>
+              <p class="notif-detail-content" id="notifDetailContent">-</p>
+            </div>
+
+            <div class="notif-detail-attachment" id="notifDetailAttachment" hidden>
+              <span class="notif-detail-attachment-icon">📎</span>
+              <div class="notif-detail-attachment-info">
+                <span class="notif-detail-attachment-name" id="notifDetailAttachName">-</span>
+                <span class="notif-detail-attachment-label" data-i18n="attachment">Lampiran</span>
+              </div>
+              <button class="notif-detail-attachment-btn" id="notifDetailAttachBtn" data-i18n="open">Buka</button>
+            </div>
+
+            <div class="notif-detail-actions">
+              <button class="btn primary" id="notifDetailReadBtn" data-i18n="mark_read">Tandai Sudah Dibaca</button>
+              <button class="btn ghost" id="notifDetailCloseBtn" data-i18n="close">Tutup</button>
+            </div>
           </div>
         </div>
 
@@ -477,7 +525,6 @@
         </div>
 
         <button class="btn primary" id="joinBtn">
-          <span class="btn-shimmer"></span>
           <span data-i18n="join_now">Gabung Meeting</span>
         </button>
       </section>

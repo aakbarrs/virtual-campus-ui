@@ -89,5 +89,14 @@
   "notif_priority_normal": "Normal",
   "notif_role_all": "All",
   "notif_role_lecturer": "Lecturer",
-  "notif_role_student": "Student"
+  "notif_role_student": "Student",
+  "notification_detail": "Notification Detail",
+  "category": "Category",
+  "priority_label": "Priority",
+  "date_label": "Date",
+  "full_message": "Full Message",
+  "attachment": "Attachment",
+  "mark_read": "Mark as Read",
+  "open": "Open",
+  "close": "Close"
 }

@@ -89,5 +89,14 @@
   "notif_priority_normal": "Normal",
   "notif_role_all": "Semua",
   "notif_role_lecturer": "Dosen",
-  "notif_role_student": "Mahasiswa"
+  "notif_role_student": "Mahasiswa",
+  "notification_detail": "Detail Notifikasi",
+  "category": "Kategori",
+  "priority_label": "Prioritas",
+  "date_label": "Tanggal",
+  "full_message": "Isi Lengkap",
+  "attachment": "Lampiran",
+  "mark_read": "Tandai Sudah Dibaca",
+  "open": "Buka",
+  "close": "Tutup"
 }

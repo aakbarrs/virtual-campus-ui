@@ -124,7 +124,16 @@
       notif_priority_normal: "Normal",
       notif_role_all: "Semua",
       notif_role_lecturer: "Dosen",
-      notif_role_student: "Mahasiswa"
+      notif_role_student: "Mahasiswa",
+      notification_detail: "Detail Notifikasi",
+      category: "Kategori",
+      priority_label: "Prioritas",
+      date_label: "Tanggal",
+      full_message: "Isi Lengkap",
+      attachment: "Lampiran",
+      mark_read: "Tandai Sudah Dibaca",
+      open: "Buka",
+      close: "Tutup"
     },
     en: {
       greeting: "Hello",
@@ -218,7 +227,16 @@
       notif_priority_normal: "Normal",
       notif_role_all: "All",
       notif_role_lecturer: "Lecturer",
-      notif_role_student: "Student"
+      notif_role_student: "Student",
+      notification_detail: "Notification Detail",
+      category: "Category",
+      priority_label: "Priority",
+      date_label: "Date",
+      full_message: "Full Message",
+      attachment: "Attachment",
+      mark_read: "Mark as Read",
+      open: "Open",
+      close: "Close"
     },
     es: {
       greeting: "Hola",
@@ -312,7 +330,16 @@
       notif_priority_normal: "Normal",
       notif_role_all: "Todos",
       notif_role_lecturer: "Profesor",
-      notif_role_student: "Estudiante"
+      notif_role_student: "Estudiante",
+      notification_detail: "Detalle de Notificación",
+      category: "Categoría",
+      priority_label: "Prioridad",
+      date_label: "Fecha",
+      full_message: "Mensaje Completo",
+      attachment: "Adjunto",
+      mark_read: "Marcar como Leído",
+      open: "Abrir",
+      close: "Cerrar"
     }
   };
 
@@ -942,26 +969,6 @@
     }
   });
 
-  /* -------------------- subtle 3D tilt on phone -------------------- */
-  const phone = $("#phone");
-  if (phone && window.matchMedia("(hover: hover)").matches) {
-    const max = 4;
-    phone.addEventListener("mousemove", (e) => {
-      try {
-        const rect = phone.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        phone.style.transform = `rotateY(${x * max}deg) rotateX(${-y * max}deg)`;
-      } catch (err) {
-        console.error("Tilt error:", err);
-      }
-    });
-    phone.addEventListener("mouseleave", () => {
-      phone.style.transform = "";
-    });
-    phone.style.transition = "transform 0.3s ease";
-  }
-
   /* -------------------- Smart Notification -------------------- */
   const notifFab = document.getElementById('notifFab');
   const notifDropdown = document.getElementById('notifDropdown');
@@ -973,14 +980,14 @@
   const notifCount = document.getElementById('notifCount');
 
   const mockNotifications = [
-    { id: 1, icon: '📢', title: 'Pengumuman UAS', desc: 'Jadwal UAS Semester Genap 2025/2026 telah dirilis.', priority: 'urgent', role: 'all', time: new Date(Date.now() - 1000 * 60 * 15), read: false },
-    { id: 2, icon: '📝', title: 'Tugas Akhir', desc: 'Batas submit proposal tugas akhir diperpanjang hingga 20 Juni.', priority: 'urgent', role: 'mahasiswa', time: new Date(Date.now() - 1000 * 60 * 60 * 2), read: false },
-    { id: 3, icon: '📅', title: 'Rapat Dosen', desc: 'Rapat koordinasi dosen setiap hari Jumat pukul 13:00.', priority: 'important', role: 'dosen', time: new Date(Date.now() - 1000 * 60 * 60 * 5), read: false },
-    { id: 4, icon: '✅', title: 'Nilai Diupload', desc: 'Nilai mata kuliah IMK sudah bisa dilihat di portal.', priority: 'important', role: 'mahasiswa', time: new Date(Date.now() - 1000 * 60 * 60 * 24), read: false },
-    { id: 5, icon: '📚', title: 'Perubahan Ruang', desc: 'Kelas Praktikum IMK pindah ke Lab A-203 mulai pekan depan.', priority: 'normal', role: 'all', time: new Date(Date.now() - 1000 * 60 * 60 * 48), read: false },
-    { id: 6, icon: '🎓', title: 'Wisuda Periode II', desc: 'Pendaftaran wisuda dibuka hingga 30 Juni 2026.', priority: 'important', role: 'mahasiswa', time: new Date(Date.now() - 1000 * 60 * 60 * 72), read: true },
-    { id: 7, icon: '🔔', title: 'Pengisian RPS', desc: 'Dosen diharapkan mengisi RPS sebelum perkuliahan dimulai.', priority: 'urgent', role: 'dosen', time: new Date(Date.now() - 1000 * 60 * 30), read: false },
-    { id: 8, icon: '📋', title: 'Survey Kepuasan', desc: 'Mohon mengisi survey kepuasan pembelajaran semester ini.', priority: 'normal', role: 'all', time: new Date(Date.now() - 1000 * 60 * 60 * 12), read: false },
+    { id: 1, icon: '📢', title: 'Pengumuman UAS', desc: 'Jadwal UAS Semester Genap 2025/2026 telah dirilis.', priority: 'urgent', role: 'all', time: new Date(Date.now() - 1000 * 60 * 15), read: false, category: 'Akademik', fullContent: 'Jadwal UAS Semester Genap 2025/2026 telah dirilis.\n\nMahasiswa dapat melihat jadwal melalui menu Akademik > Jadwal Ujian.\nPastikan tidak ada bentrok jadwal dan hadir 30 menit sebelum ujian dimulai.', attachment: { name: 'Jadwal_UAS_2025_2026.pdf', url: '#' } },
+    { id: 2, icon: '📝', title: 'Tugas Akhir', desc: 'Batas submit proposal tugas akhir diperpanjang hingga 20 Juni.', priority: 'urgent', role: 'mahasiswa', time: new Date(Date.now() - 1000 * 60 * 60 * 2), read: false, category: 'Akademik', fullContent: 'Batas submit proposal tugas akhir diperpanjang hingga 20 Juni 2026.\n\nPengajuan dilakukan melalui portal akademik.\nPastikan proposal telah disetujui oleh dosen pembimbing.', attachment: null },
+    { id: 3, icon: '📅', title: 'Rapat Dosen', desc: 'Rapat koordinasi dosen setiap hari Jumat pukul 13:00.', priority: 'important', role: 'dosen', time: new Date(Date.now() - 1000 * 60 * 60 * 5), read: false, category: 'Kepegawaian', fullContent: 'Rapat koordinasi dosen dilaksanakan setiap hari Jumat pukul 13:00 WIB di Ruang A-101.\n\nAgenda:\n- Evaluasi perkuliahan\n- Pembahasan penelitian\n- Kegiatan pengabdian masyarakat', attachment: { name: 'Agenda_Rapat_Jumat.docx', url: '#' } },
+    { id: 4, icon: '✅', title: 'Nilai Diupload', desc: 'Nilai mata kuliah IMK sudah bisa dilihat di portal.', priority: 'important', role: 'mahasiswa', time: new Date(Date.now() - 1000 * 60 * 60 * 24), read: false, category: 'Nilai', fullContent: 'Nilai mata kuliah Interaksi Manusia dan Komputer (IMK) sudah bisa dilihat di portal akademik.\n\nSilakan login dan periksa nilai Anda.\nJika ada ketidaksesuaian, hubungi dosen pengampu.', attachment: null },
+    { id: 5, icon: '📚', title: 'Perubahan Ruang', desc: 'Kelas Praktikum IMK pindah ke Lab A-203 mulai pekan depan.', priority: 'normal', role: 'all', time: new Date(Date.now() - 1000 * 60 * 60 * 48), read: false, category: 'Jadwal', fullContent: 'Mulai pekan depan, kelas Praktikum IMK akan dipindahkan ke Laboratorium A-203.\n\nRuangan sebelumnya (Lab A-201) akan digunakan untuk kegiatan penelitian.\nMohon perhatikan perubahan ini.', attachment: null },
+    { id: 6, icon: '🎓', title: 'Wisuda Periode II', desc: 'Pendaftaran wisuda dibuka hingga 30 Juni 2026.', priority: 'important', role: 'mahasiswa', time: new Date(Date.now() - 1000 * 60 * 60 * 72), read: true, category: 'Kemahasiswaan', fullContent: 'Pendaftaran wisuda Periode II Tahun Akademik 2025/2026 dibuka hingga 30 Juni 2026.\n\nPersyaratan:\n- Lulus seluruh mata kuliah\n- Bebas perpustakaan\n- Lunas UKT\n- Upload foto wisuda', attachment: { name: 'Panduan_Wisuda_2026.pdf', url: '#' } },
+    { id: 7, icon: '🔔', title: 'Pengisian RPS', desc: 'Dosen diharapkan mengisi RPS sebelum perkuliahan dimulai.', priority: 'urgent', role: 'dosen', time: new Date(Date.now() - 1000 * 60 * 30), read: false, category: 'Akademik', fullContent: 'Dosen diharapkan mengisi dan mengunggah RPS sebelum perkuliahan dimulai.\n\nBatas pengisian: H-1 sebelum perkuliahan.\nRPS diunggah melalui portal akademik dosen.', attachment: { name: 'Template_RPS_2025.docx', url: '#' } },
+    { id: 8, icon: '📋', title: 'Survey Kepuasan', desc: 'Mohon mengisi survey kepuasan pembelajaran semester ini.', priority: 'normal', role: 'all', time: new Date(Date.now() - 1000 * 60 * 60 * 12), read: false, category: 'Umum', fullContent: 'Mohon mengisi survey kepuasan pembelajaran Semester Genap 2025/2026.\n\nSurvey ini bertujuan untuk meningkatkan kualitas pembelajaran.\nHasil survey bersifat rahasia.\nWaktu pengisian: 5-10 menit.', attachment: { name: null, url: null } },
   ];
 
   function getNotifPriorityLabel(p) {
@@ -1043,10 +1050,9 @@
           </div>
         </div>
       `;
-      item.addEventListener('click', () => {
-        n.read = true;
-        renderNotifications();
-        updateNotifBadge();
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openNotifDetail(n);
       });
       notifList.appendChild(item);
     });
@@ -1084,6 +1090,76 @@
   function closeNotifPanel() {
     notifDropdown?.classList.remove('open');
   }
+
+  /* ---------- Notification Detail ---------- */
+  const notifDetail = document.getElementById('notifDetail');
+  const notifDetailBack = document.getElementById('notifDetailBack');
+  const notifDetailCloseBtn = document.getElementById('notifDetailCloseBtn');
+  const notifDetailReadBtn = document.getElementById('notifDetailReadBtn');
+  const notifDetailAttachBtn = document.getElementById('notifDetailAttachBtn');
+
+  let currentNotifDetail = null;
+
+  function formatNotifDate(date) {
+    const d = new Date(date);
+    const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    return d.toLocaleDateString('id-ID', opts) + ' WIB';
+  }
+
+  function openNotifDetail(n) {
+    currentNotifDetail = n;
+    if (!n.read) {
+      n.read = true;
+      renderNotifications();
+      updateNotifBadge();
+    }
+    document.getElementById('notifDetailIcon').textContent = n.icon;
+    document.getElementById('notifDetailTitle').textContent = n.title;
+    document.getElementById('notifDetailCategory').textContent = n.category;
+    document.getElementById('notifDetailDate').textContent = formatNotifDate(n.time);
+    document.getElementById('notifDetailContent').textContent = n.fullContent || n.desc;
+
+    const priorityEl = document.getElementById('notifDetailPriority');
+    priorityEl.textContent = getNotifPriorityLabel(n.priority);
+    priorityEl.className = 'notif-detail-meta-value priority-' + n.priority;
+
+    const roleEl = document.getElementById('notifDetailRole');
+    roleEl.textContent = n.role === 'all' ? t('notif_role_all') : n.role === 'dosen' ? t('notif_role_lecturer') : t('notif_role_student');
+
+    const attachSection = document.getElementById('notifDetailAttachment');
+    if (n.attachment && n.attachment.name) {
+      attachSection.hidden = false;
+      document.getElementById('notifDetailAttachName').textContent = n.attachment.name;
+    } else {
+      attachSection.hidden = true;
+    }
+
+    notifDetail?.classList.add('open');
+  }
+
+  function closeNotifDetail() {
+    notifDetail?.classList.remove('open');
+    currentNotifDetail = null;
+  }
+
+  notifDetailBack?.addEventListener('click', closeNotifDetail);
+  notifDetailCloseBtn?.addEventListener('click', closeNotifDetail);
+
+  notifDetailReadBtn?.addEventListener('click', () => {
+    if (currentNotifDetail) {
+      currentNotifDetail.read = true;
+      renderNotifications();
+      updateNotifBadge();
+      toast('Notifikasi ditandai sudah dibaca');
+      closeNotifDetail();
+    }
+  });
+
+  notifDetailAttachBtn?.addEventListener('click', () => {
+    if (currentNotifDetail?.attachment?.url) {
+      toast('Membuka: ' + currentNotifDetail.attachment.name);
+    }
+  });
 
   notifFab?.addEventListener('click', (e) => {
     e.stopPropagation();
