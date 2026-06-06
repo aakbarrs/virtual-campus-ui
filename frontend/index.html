@@ -50,6 +50,9 @@
               <label for="loginPassword">Password</label>
               <input id="loginPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="current-password" />
             </div>
+            <div class="auth-forgot-row">
+              <a href="#" data-action="forgot-password" data-i18n="forgot_password">Lupa password?</a>
+            </div>
             <button class="btn primary" type="submit">Masuk</button>
             <p class="auth-switch">Belum punya akun? <a href="#" data-action="goto" data-target="registerScreen">Daftar sekarang</a></p>
           </form>
@@ -81,6 +84,58 @@
             </div>
             <button class="btn primary" type="submit">Daftar</button>
             <p class="auth-switch">Sudah punya akun? <a href="#" data-action="goto" data-target="loginScreen">Masuk</a></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="forgotPassword" class="screen" data-screen="forgotPassword">
+        <div class="auth-deco"></div>
+        <div class="auth-inner">
+          <div class="auth-header">
+            <div class="auth-logo">🔑</div>
+            <h1 class="auth-title" data-i18n="forgot_password_title">Reset Password</h1>
+            <p class="auth-subtitle" data-i18n="forgot_password_subtitle">Masukkan email untuk mereset password</p>
+          </div>
+          <form id="forgotPasswordForm" class="auth-form">
+            <div class="auth-error"></div>
+            <div class="auth-field">
+              <label for="forgotEmail">Email</label>
+              <input id="forgotEmail" type="email" placeholder="nama@email.com" required autocomplete="email" />
+            </div>
+            <button class="btn primary" type="submit" data-i18n="forgot_password_btn">Kirim Link Reset</button>
+            <p class="auth-switch"><a href="#" data-action="goto" data-target="loginScreen" data-i18n="back_to_dashboard">Kembali</a></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="resetPassword" class="screen" data-screen="resetPassword">
+        <div class="auth-deco"></div>
+        <div class="auth-inner">
+          <div class="auth-header">
+            <div class="auth-logo">🔐</div>
+            <h1 class="auth-title" data-i18n="reset_password_title">Buat Password Baru</h1>
+            <p class="auth-subtitle" data-i18n="reset_password_subtitle">Masukkan token dan password baru</p>
+          </div>
+          <form id="resetPasswordForm" class="auth-form">
+            <div class="auth-error"></div>
+            <div class="auth-field">
+              <label for="resetEmail">Email</label>
+              <input id="resetEmail" type="email" placeholder="nama@email.com" required autocomplete="email" />
+            </div>
+            <div class="auth-field">
+              <label for="resetToken" data-i18n="reset_token_label">Token Reset</label>
+              <input id="resetToken" type="text" placeholder="Masukkan token dari email" required />
+            </div>
+            <div class="auth-field">
+              <label for="resetNewPassword" data-i18n="new_password">Password Baru</label>
+              <input id="resetNewPassword" type="password" placeholder="Minimal 6 karakter" required autocomplete="new-password" />
+            </div>
+            <div class="auth-field">
+              <label for="resetConfirmPassword" data-i18n="confirm_password">Konfirmasi Password</label>
+              <input id="resetConfirmPassword" type="password" placeholder="Ulangi password baru" required />
+            </div>
+            <button class="btn primary" type="submit" data-i18n="reset_password_btn">Reset Password</button>
+            <p class="auth-switch"><a href="#" data-action="goto" data-target="loginScreen" data-i18n="back_to_dashboard">Kembali</a></p>
           </form>
         </div>
       </section>
@@ -117,6 +172,10 @@
 
         <div id="activeMeetingsList">
           <p class="eyebrow" style="margin-top: 8px; margin-bottom: 12px;">Meeting Aktif</p>
+          <div id="skeletonActiveMeetings" class="skeleton-list">
+            <div class="skeleton skeleton-meeting-item"></div>
+            <div class="skeleton skeleton-meeting-item"></div>
+          </div>
           <div id="activeMeetingCards"></div>
           <p class="empty" id="noActiveMeetings" hidden>Tidak ada meeting aktif.</p>
         </div>
@@ -175,6 +234,7 @@
             <p class="subtitle" data-i18n="dashboard_prompt">Siap untuk kelas hari ini?</p>
           </div>
           <div class="header-end">
+            <button class="meet-fab" id="notifFab" aria-label="Notifikasi" title="Notifikasi">🔔</button>
             <button class="meet-fab" id="meetFab" aria-label="Buka meeting" title="Meeting">📹</button>
             <button class="avatar" id="avatarBtn" aria-label="Buka profil pengguna">
               <span id="avatarLetter">A</span>
@@ -191,6 +251,37 @@
             </div>
           </div>
         </header>
+
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-dropdown-header">
+            <span class="notif-dropdown-title"><span data-i18n="notifications">Notifikasi</span> <span class="notif-dropdown-count" id="notifCount"></span></span>
+            <button class="notif-dropdown-close" id="notifCloseBtn">&times;</button>
+          </div>
+
+          <div class="notif-dropdown-filters">
+            <select id="notifLangFilter" class="notif-filter-select" aria-label="Filter bahasa">
+              <option value="id">Bahasa Indonesia</option>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+            </select>
+            <select id="notifRoleFilter" class="notif-filter-select">
+              <option value="all" data-i18n="all_role">Semua Role</option>
+              <option value="dosen" data-i18n="lecturer">Dosen</option>
+              <option value="mahasiswa" data-i18n="student">Mahasiswa</option>
+            </select>
+          </div>
+
+          <div class="notif-dropdown-search">
+            <svg class="notif-search-icon" viewBox="0 0 24 24" width="14" height="14">
+              <path d="M10 18a8 8 0 1 1 5.29-2.29l4.7 4.7-1.42 1.42-4.7-4.7A7.96 7.96 0 0 1 10 18zM4 10a6 6 0 1 0 12 0A6 6 0 0 0 4 10z"/>
+            </svg>
+            <input class="notif-search-input" id="notifSearchInput" type="search" placeholder="Cari notifikasi..." aria-label="Cari notifikasi" />
+          </div>
+
+          <div class="notif-list" id="notifList">
+            <p class="notif-empty" data-i18n="no_notifications">Tidak ada notifikasi.</p>
+          </div>
+        </div>
 
         <nav class="lang-nav" aria-label="Pilih bahasa / Select language">
           <select id="langSelect" aria-label="Pilih bahasa">
@@ -210,6 +301,15 @@
           <input class="search" id="search" type="search" data-i18n-placeholder="search_placeholder" placeholder="Cari kelas..." aria-label="Cari kelas" />
         </div>
 
+        <div class="absensi-quick-card" data-action="goto" data-target="absensi" role="button" tabindex="0" data-keynav="true">
+          <div class="absensi-quick-icon">📋</div>
+          <div class="absensi-quick-info">
+            <span data-i18n="attendance">Absensi</span>
+            <span class="absensi-quick-status" id="absensiQuickStatus">Belum check-in</span>
+          </div>
+          <span class="absensi-quick-arrow">→</span>
+        </div>
+
         <div class="chips" role="tablist">
           <button class="chip active" data-filter="all" role="tab" aria-selected="true"><span>📋</span> <span data-i18n="all">Semua</span></button>
           <button class="chip" data-filter="live" role="tab" aria-selected="false"><span>🔴</span> <span data-i18n="live">Live</span></button>
@@ -217,101 +317,36 @@
           <button class="chip" data-filter="idle" role="tab" aria-selected="false"><span>✅</span> <span data-i18n="idle">Selesai</span></button>
         </div>
 
+        <div id="skeletonList" class="skeleton-list">
+          <div class="card class-card skeleton-card">
+            <div class="card-shine"></div>
+            <div class="class-row">
+              <div class="skeleton skeleton-icon"></div>
+              <div class="class-info"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-meta"></div></div>
+              <div class="skeleton skeleton-badge"></div>
+            </div>
+            <div class="skeleton skeleton-btn"></div>
+          </div>
+          <div class="card class-card skeleton-card">
+            <div class="card-shine"></div>
+            <div class="class-row">
+              <div class="skeleton skeleton-icon"></div>
+              <div class="class-info"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-meta"></div></div>
+              <div class="skeleton skeleton-badge"></div>
+            </div>
+            <div class="skeleton skeleton-btn"></div>
+          </div>
+          <div class="card class-card skeleton-card">
+            <div class="card-shine"></div>
+            <div class="class-row">
+              <div class="skeleton skeleton-icon"></div>
+              <div class="class-info"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-meta"></div></div>
+              <div class="skeleton skeleton-badge"></div>
+            </div>
+            <div class="skeleton skeleton-btn"></div>
+          </div>
+        </div>
         <div class="class-list" id="classList" role="region" aria-label="Daftar kelas">
-          <article class="card class-card"
-            data-status="live"
-            data-title="Praktikum IMK"
-            data-icon="🎨"
-            data-instructor="Ibu Sari Wulandari"
-            data-participants="24"
-            data-duration="90 menit"
-            data-room="Virtual A-201"
-            data-sub="Rapat mingguan • 10:00 — 11:30">
-            <div class="card-shine"></div>
-            <div class="class-row">
-              <div class="class-icon live" aria-hidden="true">
-                <span>🎨</span>
-              </div>
-              <div class="class-info">
-                <h3>Praktikum IMK</h3>
-                <p class="meta" data-i18n="live_class">Meeting aktif sekarang • Bergabung segera</p>
-              </div>
-              <span class="badge badge-live">
-                <span class="pulse"></span> <span data-i18n="live">Live</span>
-              </span>
-            </div>
-            <button class="btn primary" data-action="goto" data-target="detail" data-i18n="join_now">Bergabung</button>
-          </article>
-
-          <article class="card class-card"
-            data-status="idle"
-            data-title="Praktikum PBO"
-            data-icon="💻"
-            data-instructor="Bapak Adi Nugroho"
-            data-participants="22"
-            data-duration="90 menit"
-            data-room="Virtual B-101"
-            data-sub="">
-            <div class="card-shine"></div>
-            <div class="class-row">
-              <div class="class-icon" aria-hidden="true">
-                <span>💻</span>
-              </div>
-              <div class="class-info">
-                <h3>Praktikum PBO</h3>
-                <p class="meta" data-i18n="no_meeting">Tidak ada meeting saat ini</p>
-              </div>
-              <span class="badge badge-idle"><span data-i18n="idle">Idle</span></span>
-            </div>
-            <button class="btn ghost" data-action="goto" data-target="detail" data-i18n="view_detail">Lihat detail</button>
-          </article>
-
-          <article class="card class-card"
-            data-status="upcoming"
-            data-title="Algoritma Pemrograman"
-            data-icon="🧠"
-            data-instructor="Ibu Dewi Lestari"
-            data-participants="18"
-            data-duration="120 menit"
-            data-room="Virtual A-301"
-            data-sub="Meeting pukul 13:00">
-            <div class="card-shine"></div>
-            <div class="class-row">
-              <div class="class-icon" aria-hidden="true">
-                <span>🧠</span>
-              </div>
-              <div class="class-info">
-                <h3>Algoritma Pemrograman</h3>
-                <p class="meta">Meeting pukul 13:00 • 18 <span data-i18n="participants">peserta</span></p>
-              </div>
-              <span class="badge badge-soon">13:00</span>
-            </div>
-            <button class="btn ghost" data-action="goto" data-target="detail" data-i18n="view_detail">Lihat detail</button>
-          </article>
-
-          <article class="card class-card"
-            data-status="upcoming"
-            data-title="Basis Data"
-            data-icon="🗂️"
-            data-instructor="Bapak Rudi Hartono"
-            data-participants="20"
-            data-duration="90 menit"
-            data-room="Virtual A-401"
-            data-sub="Meeting pukul 15:30">
-            <div class="card-shine"></div>
-            <div class="class-row">
-              <div class="class-icon" aria-hidden="true">
-                <span>🗂️</span>
-              </div>
-              <div class="class-info">
-                <h3>Basis Data</h3>
-                <p class="meta">Meeting pukul 15:30 • Ruang virtual A</p>
-              </div>
-              <span class="badge badge-soon">15:30</span>
-            </div>
-            <button class="btn ghost" data-action="goto" data-target="detail" data-i18n="view_detail">Lihat detail</button>
-          </article>
-
           <p class="empty" id="emptyState" data-i18n="no_classes" hidden>Tidak ada kelas yang cocok.</p>
         </div>
       </section>
@@ -336,7 +371,7 @@
               <span>🎨</span>
             </div>
             <span class="badge" id="detailBadge">
-              <span class="pulse"></span> <span data-i18n="live">Live</span>
+              <span class="pulse"></span> <span>Live</span>
             </span>
           </div>
           <h2 class="hero-title" id="detailTitle">Praktikum IMK</h2>
@@ -377,6 +412,7 @@
           </div>
         </div>
 
+        <div id="nonLiveInfo" class="nonlive-info" style="display:none"></div>
         <button class="btn primary" id="detailJoinBtn" data-action="goto" data-target="prejoin" data-i18n="join_now">Bergabung sekarang</button>
         <button class="btn ghost" data-i18n="other_options">Opsi lainnya</button>
       </section>
@@ -395,6 +431,10 @@
           </div>
         </header>
 
+        <div id="prejoinLoader" class="prejoin-loader" hidden>
+          <div class="spinner"></div>
+          <p>Memeriksa perangkat...</p>
+        </div>
         <div class="preview" id="preview">
           <div class="preview-glow"></div>
           <div class="preview-scanline"></div>
@@ -441,6 +481,77 @@
           <span data-i18n="join_now">Gabung Meeting</span>
         </button>
       </section>
+
+      <section id="absensi" class="screen" data-screen="absensi">
+        <header class="top">
+          <button class="back" data-action="goto" data-target="dashboard" aria-label="Kembali ke dashboard">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+          <div>
+            <p class="eyebrow" data-i18n="attendance">Absensi</p>
+            <h1 class="title" data-i18n="timesheet">Timesheet</h1>
+          </div>
+        </header>
+
+        <div class="absensi-status" id="absensiStatus">
+          <div class="absensi-status-icon" id="absensiStatusIcon">⏳</div>
+          <h2 class="absensi-status-text" id="absensiStatusText" data-i18n="not_checked_in">Belum check-in</h2>
+          <p class="absensi-time-display" id="absensiTimeDisplay">--:--:--</p>
+        </div>
+
+        <div class="absensi-actions">
+          <button class="btn primary absensi-btn" id="absensiCheckinBtn">
+            <span class="absensi-btn-icon">📥</span>
+            <span data-i18n="check_in">Check In</span>
+          </button>
+          <button class="btn ghost absensi-btn" id="absensiCheckoutBtn" disabled>
+            <span class="absensi-btn-icon">📤</span>
+            <span data-i18n="check_out">Check Out</span>
+          </button>
+        </div>
+
+        <div class="absensi-stats">
+          <div class="absensi-stat-card">
+            <span class="absensi-stat-icon">⏱️</span>
+            <span class="absensi-stat-value" id="absensiTodayHours">0h 0m</span>
+            <span class="absensi-stat-label" data-i18n="today_hours">Jam Hari Ini</span>
+          </div>
+          <div class="absensi-stat-card">
+            <span class="absensi-stat-icon">📊</span>
+            <span class="absensi-stat-value" id="absensiWeekHours">0h 0m</span>
+            <span class="absensi-stat-label" data-i18n="week_hours">Jam Minggu Ini</span>
+          </div>
+          <div class="absensi-stat-card">
+            <span class="absensi-stat-icon">📅</span>
+            <span class="absensi-stat-value" id="absensiMonthHours">0h 0m</span>
+            <span class="absensi-stat-label" data-i18n="month_hours">Jam Bulan Ini</span>
+          </div>
+        </div>
+
+        <div class="absensi-section">
+          <div class="absensi-section-header">
+            <h3 data-i18n="recent_activity">Aktivitas Terbaru</h3>
+            <button class="absensi-export-btn" id="absensiExportBtn" data-i18n="export_report">Export Laporan</button>
+          </div>
+          <div id="absensiHistoryList">
+            <p class="empty" id="absensiEmpty" data-i18n="no_attendance_history">Belum ada riwayat absensi.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="modal-overlay" id="modalOverlay"></div>
+      <div class="custom-modal" id="customModal" role="dialog" aria-modal="true">
+        <div class="custom-modal-content">
+          <h3 class="custom-modal-title" id="modalTitle">Buat Meeting Baru</h3>
+          <input class="custom-modal-input" id="modalInput" type="text" placeholder="Judul meeting..." maxlength="100" autocomplete="off" />
+          <div class="custom-modal-actions">
+            <button class="btn ghost" id="modalCancelBtn">Batal</button>
+            <button class="btn primary" id="modalConfirmBtn">Buat</button>
+          </div>
+        </div>
+      </div>
 
       <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
         <span class="toast-icon">✓</span>

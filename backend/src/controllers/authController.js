@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { getDb } = require('../config/database');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
@@ -84,4 +85,51 @@ async function updateProfile(req, res, next) {
   }
 }
 
-module.exports = { register, login, me, updateProfile };
+async function forgotPassword(req, res, next) {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: 'Email wajib diisi' });
+    }
+    const db = getDb();
+    const user = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    // Always return success (security best practice — don't reveal if email exists)
+    if (user) {
+      const token = crypto.randomBytes(32).toString('hex');
+      const expires = new Date(Date.now() + 3600000).toISOString(); // 1 hour
+      db.prepare('UPDATE users SET reset_token = ?, reset_token_expires = ?, updated_at = datetime("now") WHERE id = ?')
+        .run(token, expires, user.id);
+    }
+    res.json({ message: 'Jika email terdaftar, link reset password telah dikirim' });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function resetPassword(req, res, next) {
+  try {
+    const { email, token, password } = req.body;
+    if (!email || !token || !password) {
+      return res.status(400).json({ error: 'Email, token, dan password baru wajib diisi' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'Password minimal 6 karakter' });
+    }
+    const db = getDb();
+    const user = db.prepare('SELECT * FROM users WHERE email = ? AND reset_token = ?').get(email, token);
+    if (!user) {
+      return res.status(400).json({ error: 'Token reset tidak valid' });
+    }
+    if (new Date(user.reset_token_expires) < new Date()) {
+      return res.status(400).json({ error: 'Token reset sudah kedaluwarsa' });
+    }
+    const hash = await bcrypt.hash(password, 10);
+    db.prepare('UPDATE users SET password = ?, reset_token = NULL, reset_token_expires = NULL, updated_at = datetime("now") WHERE id = ?')
+      .run(hash, user.id);
+    res.json({ message: 'Password berhasil direset. Silakan masuk.' });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { register, login, me, updateProfile, forgotPassword, resetPassword };

@@ -71,7 +71,60 @@
       room: "Ruang",
       joined: "Sudah bergabung",
       no_classes: "Tidak ada kelas yang cocok.",
-      logout: "Keluar"
+      logout: "Keluar",
+      forgot_password: "Lupa password?",
+      forgot_password_title: "Reset Password",
+      forgot_password_subtitle: "Masukkan email untuk mereset password",
+      forgot_password_btn: "Kirim Link Reset",
+      forgot_password_success: "Jika email terdaftar, link reset telah dikirim",
+      reset_password_title: "Buat Password Baru",
+      reset_password_subtitle: "Masukkan token dan password baru",
+      reset_token_label: "Token Reset",
+      reset_password_btn: "Reset Password",
+      reset_password_success: "Password berhasil direset",
+      new_password: "Password Baru",
+      confirm_password: "Konfirmasi Password",
+      password_mismatch: "Password tidak cocok",
+      create_meeting_title: "Buat Meeting Baru",
+      create_meeting_placeholder: "Judul meeting...",
+      create_meeting_cancel: "Batal",
+      create_meeting_confirm: "Buat",
+      class_scheduled: "Terjadwal",
+      class_completed: "Kelas telah selesai",
+      class_schedule_info: "Kelas akan dimulai",
+      no_live_class_info_upcoming: "Kelas ini belum dimulai. Jadwal: ",
+      no_live_class_info_idle: "Kelas ini sudah selesai. Tidak ada meeting aktif.",
+      loading_courses: "Memuat kelas...",
+      loading_meetings: "Memuat meeting...",
+      notifications: "Notifikasi",
+      no_notifications: "Tidak ada notifikasi.",
+      all_role: "Semua Role",
+      lecturer: "Dosen",
+      student: "Mahasiswa",
+      attendance: "Absensi",
+      timesheet: "Timesheet",
+      not_checked_in: "Belum check-in",
+      checked_in: "Sedang check-in",
+      check_in: "Check In",
+      check_out: "Check Out",
+      today_hours: "Jam Hari Ini",
+      week_hours: "Jam Minggu Ini",
+      month_hours: "Jam Bulan Ini",
+      recent_activity: "Aktivitas Terbaru",
+      export_report: "Export Laporan",
+      no_attendance_history: "Belum ada riwayat absensi.",
+      check_in_success: "Check-in berhasil pada",
+      check_out_success: "Check-out berhasil. Total:",
+      notif_just_now: "Baru saja",
+      notif_m_ago: "m lalu",
+      notif_h_ago: "j lalu",
+      notif_d_ago: "h lalu",
+      notif_priority_urgent: "Urgent",
+      notif_priority_important: "Penting",
+      notif_priority_normal: "Normal",
+      notif_role_all: "Semua",
+      notif_role_lecturer: "Dosen",
+      notif_role_student: "Mahasiswa"
     },
     en: {
       greeting: "Hello",
@@ -112,7 +165,60 @@
       instructor: "Dosen",
       joined: "Already joined",
       no_classes: "No matching classes found.",
-      logout: "Log out"
+      logout: "Log out",
+      forgot_password: "Forgot password?",
+      forgot_password_title: "Reset Password",
+      forgot_password_subtitle: "Enter your email to reset password",
+      forgot_password_btn: "Send Reset Link",
+      forgot_password_success: "If email is registered, a reset link has been sent",
+      reset_password_title: "Create New Password",
+      reset_password_subtitle: "Enter token and new password",
+      reset_token_label: "Reset Token",
+      reset_password_btn: "Reset Password",
+      reset_password_success: "Password reset successfully",
+      new_password: "New Password",
+      confirm_password: "Confirm Password",
+      password_mismatch: "Passwords do not match",
+      create_meeting_title: "Create New Meeting",
+      create_meeting_placeholder: "Meeting title...",
+      create_meeting_cancel: "Cancel",
+      create_meeting_confirm: "Create",
+      class_scheduled: "Scheduled",
+      class_completed: "Class completed",
+      class_schedule_info: "Class will start",
+      no_live_class_info_upcoming: "This class hasn't started yet. Schedule: ",
+      no_live_class_info_idle: "This class has ended. No active meeting.",
+      loading_courses: "Loading courses...",
+      loading_meetings: "Loading meetings...",
+      notifications: "Notifications",
+      no_notifications: "No notifications.",
+      all_role: "All Roles",
+      lecturer: "Lecturer",
+      student: "Student",
+      attendance: "Attendance",
+      timesheet: "Timesheet",
+      not_checked_in: "Not checked in",
+      checked_in: "Checked in",
+      check_in: "Check In",
+      check_out: "Check Out",
+      today_hours: "Today Hours",
+      week_hours: "Week Hours",
+      month_hours: "Month Hours",
+      recent_activity: "Recent Activity",
+      export_report: "Export Report",
+      no_attendance_history: "No attendance history.",
+      check_in_success: "Check-in successful at",
+      check_out_success: "Check-out successful. Total:",
+      notif_just_now: "Just now",
+      notif_m_ago: "m ago",
+      notif_h_ago: "h ago",
+      notif_d_ago: "d ago",
+      notif_priority_urgent: "Urgent",
+      notif_priority_important: "Important",
+      notif_priority_normal: "Normal",
+      notif_role_all: "All",
+      notif_role_lecturer: "Lecturer",
+      notif_role_student: "Student"
     },
     es: {
       greeting: "Hola",
@@ -153,7 +259,60 @@
       room: "Sala",
       joined: "Ya te has unido",
       no_classes: "No se encontraron clases coincidentes.",
-      logout: "Cerrar sesión"
+      logout: "Cerrar sesión",
+      forgot_password: "¿Olvidaste tu contraseña?",
+      forgot_password_title: "Restablecer Contraseña",
+      forgot_password_subtitle: "Ingresa tu email para restablecer la contraseña",
+      forgot_password_btn: "Enviar Enlace",
+      forgot_password_success: "Si el email está registrado, se ha enviado un enlace",
+      reset_password_title: "Crear Nueva Contraseña",
+      reset_password_subtitle: "Ingresa el token y la nueva contraseña",
+      reset_token_label: "Token de Restablecimiento",
+      reset_password_btn: "Restablecer Contraseña",
+      reset_password_success: "Contraseña restablecida exitosamente",
+      new_password: "Nueva Contraseña",
+      confirm_password: "Confirmar Contraseña",
+      password_mismatch: "Las contraseñas no coinciden",
+      create_meeting_title: "Crear Nueva Reunión",
+      create_meeting_placeholder: "Título de la reunión...",
+      create_meeting_cancel: "Cancelar",
+      create_meeting_confirm: "Crear",
+      class_scheduled: "Programado",
+      class_completed: "Clase finalizada",
+      class_schedule_info: "La clase comenzará",
+      no_live_class_info_upcoming: "Esta clase aún no ha comenzado. Horario: ",
+      no_live_class_info_idle: "Esta clase ha finalizado. No hay reunión activa.",
+      loading_courses: "Cargando cursos...",
+      loading_meetings: "Cargando reuniones...",
+      notifications: "Notificaciones",
+      no_notifications: "Sin notificaciones.",
+      all_role: "Todos los Roles",
+      lecturer: "Profesor",
+      student: "Estudiante",
+      attendance: "Asistencia",
+      timesheet: "Hoja de Tiempo",
+      not_checked_in: "Sin registrar",
+      checked_in: "Registrado",
+      check_in: "Registrar Entrada",
+      check_out: "Registrar Salida",
+      today_hours: "Horas Hoy",
+      week_hours: "Horas Semana",
+      month_hours: "Horas Mes",
+      recent_activity: "Actividad Reciente",
+      export_report: "Exportar Informe",
+      no_attendance_history: "Sin historial de asistencia.",
+      check_in_success: "Registro de entrada exitoso a las",
+      check_out_success: "Registro de salida exitoso. Total:",
+      notif_just_now: "Ahora mismo",
+      notif_m_ago: "m atrás",
+      notif_h_ago: "h atrás",
+      notif_d_ago: "d atrás",
+      notif_priority_urgent: "Urgente",
+      notif_priority_important: "Importante",
+      notif_priority_normal: "Normal",
+      notif_role_all: "Todos",
+      notif_role_lecturer: "Profesor",
+      notif_role_student: "Estudiante"
     }
   };
 
@@ -198,6 +357,65 @@
 
   $langSelect?.addEventListener('change', updateDate);
 
+  /* -------------------- skeleton loading -------------------- */
+  function showSkeleton(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'block';
+  }
+  function hideSkeleton(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  }
+
+  /* -------------------- custom modal -------------------- */
+  const modalOverlay = document.getElementById('modalOverlay');
+  const customModal = document.getElementById('customModal');
+  const modalInput = document.getElementById('modalInput');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalCancelBtn = document.getElementById('modalCancelBtn');
+  const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+
+  let modalResolve = null;
+
+  function showModal({ title, placeholder, confirmText, cancelText }) {
+    return new Promise((resolve) => {
+      modalResolve = resolve;
+      if (modalTitle) modalTitle.textContent = title || '';
+      if (modalInput) {
+        modalInput.value = '';
+        modalInput.placeholder = placeholder || '';
+        setTimeout(() => modalInput.focus(), 100);
+      }
+      if (modalConfirmBtn) modalConfirmBtn.textContent = confirmText || 'OK';
+      if (modalCancelBtn) modalCancelBtn.textContent = cancelText || 'Batal';
+      if (modalOverlay) modalOverlay.classList.add('show');
+      if (customModal) customModal.classList.add('show');
+    });
+  }
+
+  function hideModal(value) {
+    if (modalOverlay) modalOverlay.classList.remove('show');
+    if (customModal) customModal.classList.remove('show');
+    if (modalResolve) {
+      modalResolve(value);
+      modalResolve = null;
+    }
+  }
+
+  modalConfirmBtn?.addEventListener('click', () => {
+    hideModal(modalInput?.value || '');
+  });
+  modalCancelBtn?.addEventListener('click', () => {
+    hideModal(null);
+  });
+  modalOverlay?.addEventListener('click', () => {
+    hideModal(null);
+  });
+  modalInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') hideModal(modalInput.value);
+    if (e.key === 'Escape') hideModal(null);
+  });
+
   /* -------------------- API helpers -------------------- */
   async function api(path, options = {}) {
     const headers = { 'Content-Type': 'application/json', ...options.headers };
@@ -236,10 +454,15 @@
   }
 
   async function loadDashboard() {
+    showSkeleton('skeletonList');
     try {
       const data = await api('/api/courses');
+      hideSkeleton('skeletonList');
       renderCourses(data.courses);
-    } catch { /* use fallback static data */ }
+    } catch {
+      hideSkeleton('skeletonList');
+      /* use fallback static data */
+    }
   }
 
   function renderCourses(courses) {
@@ -292,12 +515,60 @@
     updateI18n();
   }
 
+  /* -------------------- forgot / reset password -------------------- */
+  document.querySelector('[data-action="forgot-password"]')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    show('forgotPassword');
+  });
+
+  $('#forgotPasswordForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = $('#forgotEmail').value.trim();
+    const errEl = $('#forgotPasswordForm .auth-error');
+    try {
+      if (errEl) errEl.classList.remove('show');
+      await api('/api/auth/forgot-password', {
+        method: 'POST',
+        body: JSON.stringify({ email })
+      });
+      toast(t('forgot_password_success'));
+      show('resetPassword');
+      // For demo: auto-fill email and show a toast with token info
+      const resetEmailInput = $('#resetEmail');
+      if (resetEmailInput) resetEmailInput.value = email;
+    } catch (err) {
+      if (errEl) { errEl.textContent = err.message; errEl.classList.add('show'); }
+    }
+  });
+
+  $('#resetPasswordForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = $('#resetEmail').value.trim();
+    const token = $('#resetToken').value.trim();
+    const password = $('#resetNewPassword').value;
+    const confirm = $('#resetConfirmPassword').value;
+    const errEl = $('#resetPasswordForm .auth-error');
+    try {
+      if (errEl) errEl.classList.remove('show');
+      if (password !== confirm) throw new Error(t('password_mismatch'));
+      if (password.length < 6) throw new Error('Password minimal 6 karakter');
+      await api('/api/auth/reset-password', {
+        method: 'POST',
+        body: JSON.stringify({ email, token, password })
+      });
+      toast(t('reset_password_success'));
+      show('loginScreen');
+    } catch (err) {
+      if (errEl) { errEl.textContent = err.message; errEl.classList.add('show'); }
+    }
+  });
+
   /* -------------------- screen navigation -------------------- */
   const screens = $$(".screen");
   const initialScreen = isLoggedIn() ? 'dashboard' : 'loginScreen';
   const history = [initialScreen];
 
-  const PROTECTED = new Set(['dashboard', 'detail', 'prejoin', 'meetingLobby', 'meetingRoom']);
+  const PROTECTED = new Set(['dashboard', 'detail', 'prejoin', 'meetingLobby', 'meetingRoom', 'absensi']);
 
   function show(id, { push = true } = {}) {
     const target = document.getElementById(id);
@@ -416,7 +687,30 @@
     }
 
     if (detailJoinBtn) {
-      detailJoinBtn.style.display = status === 'live' ? '' : 'none';
+      const infoEl = document.getElementById('nonLiveInfo');
+      detailJoinBtn.removeAttribute('data-i18n');
+      if (status === 'live') {
+        detailJoinBtn.style.display = '';
+        detailJoinBtn.textContent = t('join_now');
+        detailJoinBtn.className = 'btn primary';
+        if (infoEl) infoEl.style.display = 'none';
+      } else if (status === 'upcoming') {
+        detailJoinBtn.style.display = '';
+        detailJoinBtn.textContent = t('class_scheduled');
+        detailJoinBtn.className = 'btn ghost';
+        if (infoEl) {
+          infoEl.style.display = 'block';
+          infoEl.innerHTML = `<span class="nonlive-info-icon">📅</span> ${t('no_live_class_info_upcoming')}${sub}`;
+        }
+      } else {
+        detailJoinBtn.style.display = '';
+        detailJoinBtn.textContent = t('class_completed');
+        detailJoinBtn.className = 'btn ghost';
+        if (infoEl) {
+          infoEl.style.display = 'block';
+          infoEl.innerHTML = `<span class="nonlive-info-icon">✅</span> ${t('no_live_class_info_idle')}`;
+        }
+      }
     }
   }
 
@@ -595,10 +889,22 @@
 
   // Auto-start devices when prejoin screen becomes active (if toggles are ON)
   const prejoinEl = document.getElementById('prejoin');
+  const prejoinLoader = document.getElementById('prejoinLoader');
+  let prejoinMediaStarted = false;
+
+  async function startPrejoinMedia() {
+    if (prejoinMediaStarted) return;
+    prejoinMediaStarted = true;
+    if (prejoinLoader) prejoinLoader.hidden = false;
+    if (state.mic) await startMic();
+    if (state.cam) await startCam();
+    if (prejoinLoader) prejoinLoader.hidden = true;
+  }
+
   const prejoinObserver = new MutationObserver(() => {
     if (prejoinEl?.classList.contains('active')) {
-      if (!streams.mic && state.mic) startMic();
-      if (!streams.cam && state.cam) startCam();
+      prejoinMediaStarted = false;
+      startPrejoinMedia();
     }
   });
   if (prejoinEl) prejoinObserver.observe(prejoinEl, { attributes: true, attributeFilter: ['class'] });
@@ -655,6 +961,170 @@
     });
     phone.style.transition = "transform 0.3s ease";
   }
+
+  /* -------------------- Smart Notification -------------------- */
+  const notifFab = document.getElementById('notifFab');
+  const notifDropdown = document.getElementById('notifDropdown');
+  const notifList = document.getElementById('notifList');
+  const notifRoleFilter = document.getElementById('notifRoleFilter');
+  const notifLangFilter = document.getElementById('notifLangFilter');
+  const notifSearchInput = document.getElementById('notifSearchInput');
+  const notifCloseBtn = document.getElementById('notifCloseBtn');
+  const notifCount = document.getElementById('notifCount');
+
+  const mockNotifications = [
+    { id: 1, icon: '📢', title: 'Pengumuman UAS', desc: 'Jadwal UAS Semester Genap 2025/2026 telah dirilis.', priority: 'urgent', role: 'all', time: new Date(Date.now() - 1000 * 60 * 15), read: false },
+    { id: 2, icon: '📝', title: 'Tugas Akhir', desc: 'Batas submit proposal tugas akhir diperpanjang hingga 20 Juni.', priority: 'urgent', role: 'mahasiswa', time: new Date(Date.now() - 1000 * 60 * 60 * 2), read: false },
+    { id: 3, icon: '📅', title: 'Rapat Dosen', desc: 'Rapat koordinasi dosen setiap hari Jumat pukul 13:00.', priority: 'important', role: 'dosen', time: new Date(Date.now() - 1000 * 60 * 60 * 5), read: false },
+    { id: 4, icon: '✅', title: 'Nilai Diupload', desc: 'Nilai mata kuliah IMK sudah bisa dilihat di portal.', priority: 'important', role: 'mahasiswa', time: new Date(Date.now() - 1000 * 60 * 60 * 24), read: false },
+    { id: 5, icon: '📚', title: 'Perubahan Ruang', desc: 'Kelas Praktikum IMK pindah ke Lab A-203 mulai pekan depan.', priority: 'normal', role: 'all', time: new Date(Date.now() - 1000 * 60 * 60 * 48), read: false },
+    { id: 6, icon: '🎓', title: 'Wisuda Periode II', desc: 'Pendaftaran wisuda dibuka hingga 30 Juni 2026.', priority: 'important', role: 'mahasiswa', time: new Date(Date.now() - 1000 * 60 * 60 * 72), read: true },
+    { id: 7, icon: '🔔', title: 'Pengisian RPS', desc: 'Dosen diharapkan mengisi RPS sebelum perkuliahan dimulai.', priority: 'urgent', role: 'dosen', time: new Date(Date.now() - 1000 * 60 * 30), read: false },
+    { id: 8, icon: '📋', title: 'Survey Kepuasan', desc: 'Mohon mengisi survey kepuasan pembelajaran semester ini.', priority: 'normal', role: 'all', time: new Date(Date.now() - 1000 * 60 * 60 * 12), read: false },
+  ];
+
+  function getNotifPriorityLabel(p) {
+    const key = { urgent: 'notif_priority_urgent', important: 'notif_priority_important', normal: 'notif_priority_normal' }[p];
+    return key ? t(key) : p;
+  }
+
+  function timeAgo(date) {
+    const diff = Date.now() - date.getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return t('notif_just_now');
+    if (mins < 60) return mins + t('notif_m_ago');
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return hours + t('notif_h_ago');
+    const days = Math.floor(hours / 24);
+    return days + t('notif_d_ago');
+  }
+
+  function renderNotifications() {
+    if (!notifList) return;
+    const role = notifRoleFilter?.value || 'all';
+    const query = (notifSearchInput?.value || '').trim().toLowerCase();
+    let filtered = mockNotifications.filter(n => n.role === 'all' || n.role === role);
+    if (query) {
+      filtered = filtered.filter(n =>
+        n.title.toLowerCase().includes(query) ||
+        n.desc.toLowerCase().includes(query)
+      );
+    }
+    filtered.sort((a, b) => {
+      const order = { urgent: 0, important: 1, normal: 2 };
+      if (order[a.priority] !== order[b.priority]) return order[a.priority] - order[b.priority];
+      return b.time - a.time;
+    });
+
+    notifList.innerHTML = '';
+    if (notifCount) {
+      const unread = filtered.filter(n => !n.read).length;
+      notifCount.textContent = filtered.length > 0 ? `${unread}/${filtered.length}` : '';
+    }
+    if (filtered.length === 0) {
+      notifList.innerHTML = '<p class="notif-empty">Tidak ada notifikasi.</p>';
+      return;
+    }
+
+    filtered.forEach(n => {
+      const item = document.createElement('div');
+      item.className = `notif-item ${n.priority}${n.read ? ' read' : ''}`;
+      item.innerHTML = `
+        <div class="notif-item-icon">${n.icon}</div>
+        <div class="notif-item-body">
+          <div class="notif-item-title">
+            ${n.title}
+            <span class="notif-item-priority ${n.priority}">${getNotifPriorityLabel(n.priority)}</span>
+          </div>
+          <p class="notif-item-desc">${n.desc}</p>
+          <div class="notif-item-time">
+            ${timeAgo(n.time)}
+            <span class="notif-item-role">${n.role === 'all' ? t('notif_role_all') : n.role === 'dosen' ? t('notif_role_lecturer') : t('notif_role_student')}</span>
+          </div>
+        </div>
+      `;
+      item.addEventListener('click', () => {
+        n.read = true;
+        renderNotifications();
+        updateNotifBadge();
+      });
+      notifList.appendChild(item);
+    });
+  }
+
+  function updateNotifBadge() {
+    const unread = mockNotifications.filter(n => !n.read).length;
+    const existing = notifFab?.querySelector('.notif-badge');
+    if (unread > 0) {
+      if (existing) {
+        existing.textContent = unread > 9 ? '9+' : unread;
+      } else if (notifFab) {
+        const badge = document.createElement('span');
+        badge.className = 'notif-badge';
+        badge.textContent = unread > 9 ? '9+' : unread;
+        notifFab.appendChild(badge);
+        notifFab.classList.add('notif-fab');
+      }
+    } else {
+      if (existing) existing.remove();
+      notifFab?.classList.remove('notif-fab');
+    }
+  }
+
+  function openNotifPanel() {
+    notifDropdown?.classList.add('open');
+    if (notifLangFilter) notifLangFilter.value = getLang();
+    renderNotifications();
+    if (notifSearchInput) {
+      notifSearchInput.value = '';
+      notifSearchInput.focus();
+    }
+  }
+
+  function closeNotifPanel() {
+    notifDropdown?.classList.remove('open');
+  }
+
+  notifFab?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (notifDropdown?.classList.contains('open')) {
+      closeNotifPanel();
+    } else {
+      openNotifPanel();
+    }
+  });
+
+  notifCloseBtn?.addEventListener('click', closeNotifPanel);
+
+  notifRoleFilter?.addEventListener('change', renderNotifications);
+
+  notifLangFilter?.addEventListener('change', () => {
+    const lang = notifLangFilter.value;
+    const globalSelect = document.getElementById('langSelect');
+    if (globalSelect) {
+      globalSelect.value = lang;
+      globalSelect.dispatchEvent(new Event('change'));
+    }
+  });
+
+  notifSearchInput?.addEventListener('input', renderNotifications);
+
+  document.addEventListener('click', (e) => {
+    if (notifDropdown?.classList.contains('open') && !notifDropdown.contains(e.target) && e.target !== notifFab) {
+      closeNotifPanel();
+    }
+  });
+
+  updateNotifBadge();
+
+  /* -------------------- keyboard nav for role="button" elements -------------------- */
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const trigger = e.target.closest('[data-keynav="true"]');
+    if (!trigger) return;
+    e.preventDefault();
+    trigger.click();
+  });
 
   /* -------------------- avatar / logout -------------------- */
   const avatarBtn = $('#avatarBtn');
@@ -962,8 +1432,10 @@
 
   /* ---------- Meeting Lobby ---------- */
   async function loadActiveMeetings() {
+    showSkeleton('skeletonActiveMeetings');
     try {
       const meetings = await listActiveMeetings();
+      hideSkeleton('skeletonActiveMeetings');
       const container = document.getElementById('activeMeetingCards');
       const empty = document.getElementById('noActiveMeetings');
       if (!container) return;
@@ -995,6 +1467,7 @@
         container.appendChild(item);
       });
     } catch (err) {
+      hideSkeleton('skeletonActiveMeetings');
       console.warn('Failed to load active meetings:', err);
     }
   }
@@ -1018,7 +1491,12 @@
   });
 
   document.getElementById('createMeetingBtn')?.addEventListener('click', async () => {
-    const title = prompt('Judul Meeting:', 'Meeting Saya');
+    const title = await showModal({
+      title: t('create_meeting_title'),
+      placeholder: t('create_meeting_placeholder'),
+      confirmText: t('create_meeting_confirm'),
+      cancelText: t('create_meeting_cancel')
+    });
     if (!title || !title.trim()) return;
     try {
       const meeting = await createMeeting(title.trim());
@@ -1085,6 +1563,269 @@
       avatar.classList.toggle('hidden', enabled);
     }
   });
+
+  /* -------------------- Absensi & Timesheet -------------------- */
+  const ABSENSI_KEY = 'vc_absensi';
+  let absensiTimer = null;
+
+  function getAbsensiData() {
+    try {
+      return JSON.parse(localStorage.getItem(ABSENSI_KEY)) || [];
+    } catch { return []; }
+  }
+
+  function saveAbsensiData(data) {
+    localStorage.setItem(ABSENSI_KEY, JSON.stringify(data));
+  }
+
+  function formatTime(d) {
+    return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }
+
+  function formatDate(d) {
+    return d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function formatHours(ms) {
+    const totalMinutes = Math.floor(ms / 60000);
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return `${h}j ${m}m`;
+  }
+
+  function getTodayRecords(data) {
+    const today = new Date();
+    const todayStr = today.toDateString();
+    return data.filter(r => new Date(r.date).toDateString() === todayStr);
+  }
+
+  function getActiveSession() {
+    const data = getAbsensiData();
+    const todayRecords = getTodayRecords(data);
+    return todayRecords.find(r => !r.checkout) || null;
+  }
+
+  function calcHours(records) {
+    return records.reduce((total, r) => {
+      const start = new Date(r.checkin);
+      const end = r.checkout ? new Date(r.checkout) : new Date();
+      return total + (end.getTime() - start.getTime());
+    }, 0);
+  }
+
+  function getWeekRecords(data) {
+    const now = new Date();
+    const day = now.getDay();
+    const diff = day === 0 ? 6 : day - 1;
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - diff);
+    monday.setHours(0, 0, 0, 0);
+    return data.filter(r => new Date(r.date) >= monday);
+  }
+
+  function getMonthRecords(data) {
+    const now = new Date();
+    return data.filter(r => {
+      const d = new Date(r.date);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+  }
+
+  function updateAbsensiDisplay() {
+    const session = getActiveSession();
+    const statusIcon = document.getElementById('absensiStatusIcon');
+    const statusText = document.getElementById('absensiStatusText');
+    const timeDisplay = document.getElementById('absensiTimeDisplay');
+    const checkinBtn = document.getElementById('absensiCheckinBtn');
+    const checkoutBtn = document.getElementById('absensiCheckoutBtn');
+    const quickStatus = document.getElementById('absensiQuickStatus');
+
+    if (session) {
+      if (statusIcon) statusIcon.textContent = '📥';
+      if (statusText) statusText.textContent = t('checked_in') || 'Sedang check-in';
+      if (quickStatus) {
+        quickStatus.textContent = (t('checked_in') || 'Sedang check-in') + ' ' + formatTime(new Date(session.checkin));
+        quickStatus.style.color = 'var(--success)';
+      }
+      checkinBtn?.setAttribute('disabled', 'true');
+      checkoutBtn?.removeAttribute('disabled');
+    } else {
+      if (statusIcon) statusIcon.textContent = '⏳';
+      if (statusText) statusText.textContent = t('not_checked_in') || 'Belum check-in';
+      if (quickStatus) {
+        quickStatus.textContent = t('not_checked_in') || 'Belum check-in';
+        quickStatus.style.color = '';
+      }
+      checkinBtn?.removeAttribute('disabled');
+      checkoutBtn?.setAttribute('disabled', 'true');
+    }
+  }
+
+  function updateAbsensiTimer() {
+    const session = getActiveSession();
+    const timeDisplay = document.getElementById('absensiTimeDisplay');
+    if (session && timeDisplay) {
+      const elapsed = Date.now() - new Date(session.checkin).getTime();
+      const totalMinutes = Math.floor(elapsed / 60000);
+      const h = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
+      const m = String(totalMinutes % 60).padStart(2, '0');
+      const s = String(Math.floor((elapsed % 60000) / 1000)).padStart(2, '0');
+      timeDisplay.textContent = `${h}:${m}:${s}`;
+    } else if (timeDisplay) {
+      timeDisplay.textContent = '--:--:--';
+    }
+  }
+
+  function updateAbsensiStats() {
+    const data = getAbsensiData();
+    const todayRecords = getTodayRecords(data);
+    const weekRecords = getWeekRecords(data);
+    const monthRecords = getMonthRecords(data);
+
+    document.getElementById('absensiTodayHours').textContent = formatHours(calcHours(todayRecords));
+    document.getElementById('absensiWeekHours').textContent = formatHours(calcHours(weekRecords));
+    document.getElementById('absensiMonthHours').textContent = formatHours(calcHours(monthRecords));
+  }
+
+  function renderAbsensiHistory() {
+    const list = document.getElementById('absensiHistoryList');
+    if (!list) return;
+    const data = getAbsensiData();
+    const sorted = [...data].sort((a, b) => new Date(b.checkin) - new Date(a.checkin));
+    const empty = document.getElementById('absensiEmpty');
+
+    list.innerHTML = '';
+    if (sorted.length === 0) {
+      if (empty) empty.hidden = false;
+      return;
+    }
+    if (empty) empty.hidden = true;
+
+    sorted.slice(0, 20).forEach(r => {
+      const start = new Date(r.checkin);
+      const end = r.checkout ? new Date(r.checkout) : null;
+      const hours = end ? formatHours(end.getTime() - start.getTime()) : 'Berlangsung';
+      const item = document.createElement('div');
+      item.className = 'absensi-history-item';
+      item.innerHTML = `
+        <div class="absensi-history-icon">${end ? '✅' : '🟢'}</div>
+        <div class="absensi-history-body">
+          <div class="absensi-history-date">${formatDate(start)}</div>
+          <div class="absensi-history-detail">${formatTime(start)}${end ? ' — ' + formatTime(end) : ' — ...'}</div>
+        </div>
+        <div class="absensi-history-hours">${hours}</div>
+      `;
+      list.appendChild(item);
+    });
+  }
+
+  function absensiCheckin() {
+    const data = getAbsensiData();
+    const now = new Date();
+    data.push({ id: Date.now(), date: now.toISOString(), checkin: now.toISOString(), checkout: null });
+    saveAbsensiData(data);
+    updateAbsensiDisplay();
+    updateAbsensiStats();
+    renderAbsensiHistory();
+    toast((t('check_in_success') || 'Check-in berhasil pada') + ' ' + formatTime(now));
+
+    startAbsensiTimer();
+  }
+
+  function absensiCheckout() {
+    const session = getActiveSession();
+    if (!session) return;
+    const data = getAbsensiData();
+    const now = new Date();
+    const record = data.find(r => r.id === session.id);
+    if (record) {
+      record.checkout = now.toISOString();
+      saveAbsensiData(data);
+    }
+    updateAbsensiDisplay();
+    updateAbsensiStats();
+    renderAbsensiHistory();
+    toast((t('check_out_success') || 'Check-out berhasil. Total:') + ' ' + formatHours(now.getTime() - new Date(session.checkin).getTime()));
+  }
+
+  function absensiExportReport() {
+    const data = getAbsensiData();
+    if (data.length === 0) {
+      toast('Belum ada data absensi untuk diexport.');
+      return;
+    }
+    const rows = [['Tanggal', 'Check In', 'Check Out', 'Durasi']];
+    data.forEach(r => {
+      const start = new Date(r.checkin);
+      const end = r.checkout ? new Date(r.checkout) : null;
+      const dur = end ? formatHours(end.getTime() - start.getTime()) : 'Berlangsung';
+      rows.push([
+        formatDate(start),
+        formatTime(start),
+        end ? formatTime(end) : '-',
+        dur
+      ]);
+    });
+    const csv = rows.map(row => row.map(f => `"${f}"`).join(',')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'laporan_absensi_' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Laporan berhasil diunduh.');
+  }
+
+  document.getElementById('absensiCheckinBtn')?.addEventListener('click', absensiCheckin);
+  document.getElementById('absensiCheckoutBtn')?.addEventListener('click', absensiCheckout);
+  document.getElementById('absensiExportBtn')?.addEventListener('click', absensiExportReport);
+
+  let absensiTimerActive = false;
+
+  function startAbsensiTimer() {
+    if (absensiTimerActive) return;
+    absensiTimerActive = true;
+    absensiTimer = setInterval(updateAbsensiTimer, 1000);
+  }
+
+  function stopAbsensiTimer() {
+    absensiTimerActive = false;
+    if (absensiTimer) {
+      clearInterval(absensiTimer);
+      absensiTimer = null;
+    }
+  }
+
+  const absensiObserver = new MutationObserver(() => {
+    const el = document.getElementById('absensi');
+    if (el?.classList.contains('active')) {
+      updateAbsensiDisplay();
+      updateAbsensiStats();
+      renderAbsensiHistory();
+      const session = getActiveSession();
+      if (session) {
+        startAbsensiTimer();
+        updateAbsensiTimer();
+      } else {
+        stopAbsensiTimer();
+        updateAbsensiTimer();
+      }
+    } else {
+      stopAbsensiTimer();
+    }
+  });
+  const absensiEl = document.getElementById('absensi');
+  if (absensiEl) absensiObserver.observe(absensiEl, { attributes: true, attributeFilter: ['class'] });
+
+  // Init absensi state if timer needed from a prior session
+  (function initAbsensi() {
+    const session = getActiveSession();
+    if (session) {
+      startAbsensiTimer();
+      updateAbsensiTimer();
+    }
+  })();
 
   window.translations = translations;
 })();

@@ -75,6 +75,9 @@ async function initDb() {
     db = new sqlJs.Database();
   }
   db.run('PRAGMA foreign_keys = ON');
+  // Migration: add reset_token columns if upgrading from old schema
+  try { db.run("ALTER TABLE users ADD COLUMN reset_token TEXT DEFAULT NULL"); } catch(e) {}
+  try { db.run("ALTER TABLE users ADD COLUMN reset_token_expires TEXT DEFAULT NULL"); } catch(e) {}
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -82,6 +85,8 @@ async function initDb() {
       email       TEXT    NOT NULL UNIQUE,
       password    TEXT    NOT NULL,
       avatar      TEXT    DEFAULT NULL,
+      reset_token TEXT    DEFAULT NULL,
+      reset_token_expires TEXT DEFAULT NULL,
       created_at  TEXT    DEFAULT (datetime('now')),
       updated_at  TEXT    DEFAULT (datetime('now'))
     );
