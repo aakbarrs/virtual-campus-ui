@@ -34,7 +34,7 @@
   const translations = {
     id: {
       greeting: "Halo",
-      dashboard_prompt: "Siap untuk kelas hari ini?",
+      dashboard_prompt: "Selamat datang di portal akademik",
       preview_tag_cam_active: "Kamera aktif",
       preview_tag_cam_off: "Kamera dimatikan",
       mic: "Mikrofon",
@@ -123,8 +123,11 @@
       notif_priority_important: "Penting",
       notif_priority_normal: "Normal",
       notif_role_all: "Semua",
+      view_profile: "Lihat Profil",
       notif_role_lecturer: "Dosen",
       notif_role_student: "Mahasiswa",
+      dark_mode: "Mode Gelap",
+      light_mode: "Mode Terang",
       notification_detail: "Detail Notifikasi",
       category: "Kategori",
       priority_label: "Prioritas",
@@ -133,11 +136,25 @@
       attachment: "Lampiran",
       mark_read: "Tandai Sudah Dibaca",
       open: "Buka",
-      close: "Tutup"
+      close: "Tutup",
+      course_schedule: "Jadwal Kuliah",
+      schedule: "Jadwal",
+      monday: "Senin",
+      tuesday: "Selasa",
+      wednesday: "Rabu",
+      thursday: "Kamis",
+      friday: "Jumat",
+      no_schedule: "Tidak ada jadwal",
+      grade_report: "Nilai & Transkrip",
+      grades: "Nilai",
+      ip_semester: "IP Semester",
+      ip_cumulative: "IP Kumulatif",
+      total_credits: "Total SKS",
+      all_semesters: "Semua"
     },
     en: {
       greeting: "Hello",
-      dashboard_prompt: "Ready for today's classes?",
+      dashboard_prompt: "Welcome to the academic portal",
       preview_tag_cam_active: "Camera active",
       preview_tag_cam_off: "Camera off",
       mic: "Microphone",
@@ -226,8 +243,11 @@
       notif_priority_important: "Important",
       notif_priority_normal: "Normal",
       notif_role_all: "All",
+      view_profile: "View Profile",
       notif_role_lecturer: "Lecturer",
       notif_role_student: "Student",
+      dark_mode: "Dark Mode",
+      light_mode: "Light Mode",
       notification_detail: "Notification Detail",
       category: "Category",
       priority_label: "Priority",
@@ -236,11 +256,25 @@
       attachment: "Attachment",
       mark_read: "Mark as Read",
       open: "Open",
-      close: "Close"
+      close: "Close",
+      course_schedule: "Course Schedule",
+      schedule: "Schedule",
+      monday: "Monday",
+      tuesday: "Tuesday",
+      wednesday: "Wednesday",
+      thursday: "Thursday",
+      friday: "Friday",
+      no_schedule: "No schedule",
+      grade_report: "Grades & Transcript",
+      grades: "Grades",
+      ip_semester: "Semester GPA",
+      ip_cumulative: "Cumulative GPA",
+      total_credits: "Total Credits",
+      all_semesters: "All Semesters"
     },
     es: {
       greeting: "Hola",
-      dashboard_prompt: "¿Listo para la clase hoy?",
+      dashboard_prompt: "Bienvenido al portal académico",
       preview_tag_cam_active: "Cámara activa",
       preview_tag_cam_off: "Cámara desactivada",
       mic: "Micrófono",
@@ -329,8 +363,11 @@
       notif_priority_important: "Importante",
       notif_priority_normal: "Normal",
       notif_role_all: "Todos",
+      view_profile: "Ver Perfil",
       notif_role_lecturer: "Profesor",
       notif_role_student: "Estudiante",
+      dark_mode: "Modo Oscuro",
+      light_mode: "Modo Claro",
       notification_detail: "Detalle de Notificación",
       category: "Categoría",
       priority_label: "Prioridad",
@@ -339,7 +376,21 @@
       attachment: "Adjunto",
       mark_read: "Marcar como Leído",
       open: "Abrir",
-      close: "Cerrar"
+      close: "Cerrar",
+      course_schedule: "Horario de Clases",
+      schedule: "Horario",
+      monday: "Lunes",
+      tuesday: "Martes",
+      wednesday: "Miércoles",
+      thursday: "Jueves",
+      friday: "Viernes",
+      no_schedule: "Sin horario",
+      grade_report: "Calificaciones y Expediente",
+      grades: "Calificaciones",
+      ip_semester: "GPA Semestral",
+      ip_cumulative: "GPA Acumulativo",
+      total_credits: "Total Créditos",
+      all_semesters: "Todos los Semestres"
     }
   };
 
@@ -595,7 +646,7 @@
   const initialScreen = isLoggedIn() ? 'dashboard' : 'loginScreen';
   const history = [initialScreen];
 
-  const PROTECTED = new Set(['dashboard', 'detail', 'prejoin', 'meetingLobby', 'meetingRoom', 'absensi']);
+  const PROTECTED = new Set(['dashboard', 'detail', 'prejoin', 'meetingLobby', 'meetingRoom', 'absensi', 'schedule', 'grades']);
 
   function show(id, { push = true } = {}) {
     const target = document.getElementById(id);
@@ -1193,6 +1244,187 @@
 
   updateNotifBadge();
 
+  /* -------------------- Jadwal Kuliah (Schedule) -------------------- */
+  const scheduleData = [
+    { id:1, day:'senin', start:'07:00', end:'09:30', course:'Dasar Kecerdasan Artifisial', room:'Lab A-201', lecturer:'Bambang Subeno, S.T., M.Kom.', color:'#6366f1', semester:'Genap 2025/2026', prodi:'Teknik Informatika', cls:'IF-48-11' },
+    { id:2, day:'senin', start:'09:40', end:'11:20', course:'Wawasan Global TIK', room:'Ruang 105', lecturer:'Ahmad Bintang Arif, S.Kom., M.Kom. & Donni Richasdy, S.T., M.T.', color:'#10b981', semester:'Genap 2025/2026', prodi:'Teknik Informatika', cls:'IF-48-10' },
+    { id:3, day:'selasa', start:'07:00', end:'10:20', course:'Pemrograman Berorientasi Objek', room:'Lab B-101', lecturer:'Soni Yora, S.Kom., M.Kom.', color:'#ec4899', semester:'Genap 2025/2026', prodi:'Teknik Informatika', cls:'IF-48-10' },
+    { id:4, day:'rabu', start:'07:00', end:'10:20', course:'Jaringan Komputer', room:'Lab A-201', lecturer:'Ghifari Ramadhika Permana, S.Kom., M.Sc.', color:'#ef4444', semester:'Genap 2025/2026', prodi:'Teknik Informatika', cls:'IF-48-10' },
+    { id:5, day:'rabu', start:'10:30', end:'12:00', course:'Interaksi Manusia Komputer', room:'Ruang 203', lecturer:'Iwan Abadi, S.Kom., MM., MT., CSCU., CEI', color:'#3b82c4', semester:'Genap 2025/2026', prodi:'Teknik Informatika', cls:'IF-48-10' },
+    { id:6, day:'kamis', start:'07:00', end:'09:30', course:'Strategi Algoritma', room:'Ruang 105', lecturer:'Fauzan Firdaus, S.Kom., M.T.', color:'#f59e0b', semester:'Genap 2025/2026', prodi:'Teknik Informatika', cls:'IF-48-04' },
+  ];
+
+  let selectedSemester = 'Genap 2025/2026';
+  let selectedProdi = 'Teknik Informatika';
+  let selectedDay = 'senin';
+
+  const dayNames = { senin: 'Senin', selasa: 'Selasa', rabu: 'Rabu', kamis: 'Kamis', jumat: 'Jumat' };
+  const dayKeys = ['senin','selasa','rabu','kamis','jumat'];
+
+  function renderSchedule() {
+    const list = document.getElementById('scheduleList');
+    if (!list) return;
+    const filtered = scheduleData.filter(s => s.semester === selectedSemester && s.prodi === selectedProdi && s.day === selectedDay);
+    filtered.sort((a,b) => a.start.localeCompare(b.start));
+    list.innerHTML = '';
+    if (filtered.length === 0) {
+      list.innerHTML = '<p class="schedule-empty" data-i18n="no_schedule">' + t('no_schedule') + '</p>'; return;
+    }
+    filtered.forEach(s => {
+      const card = document.createElement('div'); card.className = 'schedule-card';
+      card.innerHTML = `
+        <div class="schedule-color-bar" style="background:${s.color}"></div>
+        <div class="schedule-card-body">
+          <div class="schedule-card-course">${s.course}</div>
+          <div class="schedule-card-detail">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            ${s.room}
+          </div>
+          <div class="schedule-card-detail">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            ${s.lecturer}
+          </div>
+        </div>
+        <div class="schedule-card-time">${s.start} &mdash; ${s.end}</div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function initSchedule() {
+    const semesterSelect = document.getElementById('scheduleSemester');
+    const prodiSelect = document.getElementById('scheduleProdi');
+    if (semesterSelect) { semesterSelect.value = selectedSemester;
+      semesterSelect.addEventListener('change', () => { selectedSemester = semesterSelect.value; renderSchedule(); }); }
+    if (prodiSelect) { prodiSelect.value = selectedProdi;
+      prodiSelect.addEventListener('change', () => { selectedProdi = prodiSelect.value; renderSchedule(); }); }
+    const chips = document.querySelectorAll('.schedule-day-chip');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        selectedDay = chip.dataset.day;
+        renderSchedule();
+      });
+    });
+  }
+
+  const scheduleObserver = new MutationObserver(() => {
+    const el = document.getElementById('schedule');
+    if (el?.classList.contains('active')) { initSchedule(); renderSchedule(); }
+  });
+  const scheduleEl = document.getElementById('schedule');
+  if (scheduleEl) scheduleObserver.observe(scheduleEl, { attributes: true, attributeFilter: ['class'] });
+
+  /* -------------------- Nilai & Transkrip (Grades) -------------------- */
+  const gradesData = {
+    semesters: [
+      { name:'Semester 1', gpa:3.6, totalSks:20, courses:[
+        { name:'Praktikum IMK', sks:3, components:{tugas:88,uts:82,uas:90,praktikum:85}, grade:'A', passed:true },
+        { name:'Basis Data', sks:3, components:{tugas:78,uts:75,uas:80}, grade:'B+', passed:true },
+        { name:'Struktur Data', sks:3, components:{tugas:82,uts:70,uas:75}, grade:'B', passed:true },
+        { name:'Jaringan Komputer', sks:3, components:{tugas:90,uts:85,uas:88}, grade:'A', passed:true },
+        { name:'Sistem Operasi', sks:3, components:{tugas:65,uts:70,uas:60}, grade:'C+', passed:true },
+        { name:'Pemrograman Web', sks:3, components:{tugas:92,uts:88,uas:85}, grade:'A', passed:true },
+        { name:'Bahasa Inggris', sks:2, components:{tugas:80,uts:78,uas:82}, grade:'B+', passed:true },
+      ]},
+      { name:'Semester 2', gpa:3.4, totalSks:22, courses:[
+        { name:'Manajemen Basis Data', sks:3, components:{tugas:80,uts:78,uas:85}, grade:'B+', passed:true },
+        { name:'Analisis Proses Bisnis', sks:3, components:{tugas:75,uts:72,uas:78}, grade:'B', passed:true },
+        { name:'Sistem Informasi', sks:3, components:{tugas:88,uts:82,uas:90}, grade:'A', passed:true },
+        { name:'Pemrograman Mobile', sks:3, components:{tugas:70,uts:65,uas:68}, grade:'C+', passed:true },
+        { name:'Interaksi Manusia Komputer', sks:3, components:{tugas:85,uts:80,uas:88,praktikum:82}, grade:'A', passed:true },
+        { name:'Kecerdasan Buatan', sks:3, components:{tugas:72,uts:68,uas:74}, grade:'B', passed:true },
+        { name:'Data Warehouse', sks:2, components:{tugas:78,uts:80,uas:76}, grade:'B', passed:true },
+        { name:'Etika Profesi TI', sks:2, components:{tugas:90,uts:88,uas:92}, grade:'A', passed:true },
+      ]},
+      { name:'Semester 3', gpa:3.65, totalSks:19, courses:[
+        { name:'Dasar Kecerdasan Artifisial', sks:3, components:{tugas:88,uts:82,uas:90}, grade:'A', passed:true },
+        { name:'Interaksi Manusia Komputer', sks:3, components:{tugas:85,uts:80,uas:88,praktikum:82}, grade:'A', passed:true },
+        { name:'Jaringan Komputer', sks:4, components:{tugas:82,uts:78,uas:85,praktikum:80}, grade:'B+', passed:true },
+        { name:'Pemrograman Berorientasi Objek', sks:4, components:{tugas:90,uts:85,uas:88,praktikum:86}, grade:'A', passed:true },
+        { name:'Strategi Algoritma', sks:3, components:{tugas:78,uts:72,uas:80}, grade:'B', passed:true },
+        { name:'Wawasan Global TIK', sks:2, components:{tugas:92,uts:88,uas:90}, grade:'A', passed:true },
+      ]},
+    ]
+  };
+  let selectedGradeSemester = 'all';
+
+  function gradeColorClass(grade) {
+    const first = grade.charAt(0);
+    if (first === 'A') return 'grades-grade-a';
+    if (first === 'B') return 'grades-grade-b';
+    if (first === 'C') return 'grades-grade-c';
+    if (first === 'D') return 'grades-grade-d';
+    if (first === 'E') return 'grades-grade-e';
+    return 'grades-grade-b';
+  }
+
+  function calcCumulativeGPA() {
+    let total = 0, count = 0;
+    gradesData.semesters.forEach(s => { total += s.gpa * s.totalSks; count += s.totalSks; });
+    return count > 0 ? (total / count).toFixed(2) : '0.00';
+  }
+
+  function renderGrades() {
+    const list = document.getElementById('gradesList');
+    if (!list) return;
+    const displaySemesters = selectedGradeSemester === 'all'
+      ? gradesData.semesters
+      : gradesData.semesters.filter(s => s.name === selectedGradeSemester);
+
+    document.getElementById('gradesIPSemester').textContent = displaySemesters.length === 1 ? displaySemesters[0].gpa.toFixed(2) : '-';
+    document.getElementById('gradesIPKumulatif').textContent = calcCumulativeGPA();
+    let totalSks = 0;
+    displaySemesters.forEach(s => { totalSks += s.totalSks; });
+    document.getElementById('gradesTotalSks').textContent = totalSks;
+
+    list.innerHTML = '';
+    if (displaySemesters.length === 0) {
+      list.innerHTML = '<p class="grades-empty">Tidak ada data nilai</p>'; return;
+    }
+    displaySemesters.forEach(sem => {
+      sem.courses.forEach(c => {
+        const card = document.createElement('div'); card.className = 'grades-course-card';
+        const comps = c.components;
+        let compHtml = '';
+        if (comps.tugas !== undefined) compHtml += `<div class="grades-component"><span class="grades-component-value">${comps.tugas}</span><span class="grades-component-label">Tugas</span></div>`;
+        if (comps.uts !== undefined) compHtml += `<div class="grades-component"><span class="grades-component-value">${comps.uts}</span><span class="grades-component-label">UTS</span></div>`;
+        if (comps.uas !== undefined) compHtml += `<div class="grades-component"><span class="grades-component-value">${comps.uas}</span><span class="grades-component-label">UAS</span></div>`;
+        if (comps.praktikum !== undefined) compHtml += `<div class="grades-component"><span class="grades-component-value">${comps.praktikum}</span><span class="grades-component-label">Praktikum</span></div>`;
+        card.innerHTML = `
+          <div class="grades-course-header">
+            <span class="grades-course-name">${c.name}</span>
+            <span class="grades-course-sks">${c.sks} SKS</span>
+          </div>
+          <div class="grades-components">${compHtml}</div>
+          <div class="grades-footer">
+            <span class="grades-grade-badge ${gradeColorClass(c.grade)}">${c.grade}</span>
+            <span class="grades-status ${c.passed ? 'grades-status-passed' : 'grades-status-failed'}">${c.passed ? 'Lulus' : 'Tidak Lulus'}</span>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    });
+  }
+
+  // Semester chip click handler
+  document.querySelector('.grades-semester-chips')?.addEventListener('click', (e) => {
+    const chip = e.target.closest('.grades-semester-chip');
+    if (!chip) return;
+    document.querySelectorAll('.grades-semester-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedGradeSemester = chip.dataset.semester;
+    renderGrades();
+  });
+
+  // Observer for grades screen
+  const gradesObserver = new MutationObserver(() => {
+    if (document.getElementById('gradesScreen')?.classList.contains('active')) renderGrades();
+  });
+  const gradesEl = document.getElementById('gradesScreen');
+  if (gradesEl) gradesObserver.observe(gradesEl, { attributes: true, attributeFilter: ['class'] });
+
   /* -------------------- keyboard nav for role="button" elements -------------------- */
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -1201,6 +1433,37 @@
     e.preventDefault();
     trigger.click();
   });
+
+  /* -------------------- Dark Mode -------------------- */
+  const DARK_KEY = 'vc_dark';
+  const darkToggle = document.getElementById('darkToggle');
+
+  function applyDark(isDark) {
+    if (isDark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      if (darkToggle) darkToggle.textContent = '☀️';
+      darkToggle?.setAttribute('aria-label', 'Switch to light mode');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      if (darkToggle) darkToggle.textContent = '🌙';
+      darkToggle?.setAttribute('aria-label', 'Switch to dark mode');
+    }
+  }
+
+  function initDarkMode() {
+    const stored = localStorage.getItem(DARK_KEY);
+    const isDark = stored === 'true';
+    applyDark(isDark);
+  }
+
+  darkToggle?.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const next = !isDark;
+    localStorage.setItem(DARK_KEY, next);
+    applyDark(next);
+  });
+
+  initDarkMode();
 
   /* -------------------- avatar / logout -------------------- */
   const avatarBtn = $('#avatarBtn');
@@ -1220,6 +1483,10 @@
   $('#logoutBtn')?.addEventListener('click', () => {
     profileDropdown?.classList.remove('open');
     logout();
+  });
+
+  document.querySelector('[data-action="goto-profile"]')?.addEventListener('click', () => {
+    profileDropdown?.classList.remove('open');
   });
 
   function updateUserDisplay() {

@@ -88,8 +88,11 @@
   "notif_priority_important": "Penting",
   "notif_priority_normal": "Normal",
   "notif_role_all": "Semua",
+  "view_profile": "Lihat Profil",
   "notif_role_lecturer": "Dosen",
   "notif_role_student": "Mahasiswa",
+  "dark_mode": "Mode Gelap",
+  "light_mode": "Mode Terang",
   "notification_detail": "Detail Notifikasi",
   "category": "Kategori",
   "priority_label": "Prioritas",
@@ -98,5 +101,13 @@
   "attachment": "Lampiran",
   "mark_read": "Tandai Sudah Dibaca",
   "open": "Buka",
-  "close": "Tutup"
+  "close": "Tutup",
+  "course_schedule": "Jadwal Kuliah",
+  "schedule": "Jadwal",
+  "monday": "Senin",
+  "tuesday": "Selasa",
+  "wednesday": "Rabu",
+  "thursday": "Kamis",
+  "friday": "Jumat",
+  "no_schedule": "Tidak ada jadwal"
 }

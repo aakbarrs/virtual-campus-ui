@@ -25,18 +25,18 @@ async function seed() {
   `);
 
   const courses = [
-    ['Praktikum IMK', '🎨', 'Ibu Sari Wulandari', 24, '90 menit', 'Virtual A-201',
-      'Praktikum Interaksi Manusia dan Komputer - membahas user experience dan usability testing.', 'live', 'Rapat mingguan • 10:00 — 11:30'],
-    ['Praktikum PBO', '💻', 'Bapak Adi Nugroho', 22, '90 menit', 'Virtual B-101',
-      'Praktikum Pemrograman Berorientasi Objek - Java inheritance, polymorphism, dan design patterns.', 'idle', ''],
-    ['Algoritma Pemrograman', '🧠', 'Ibu Dewi Lestari', 18, '120 menit', 'Virtual A-301',
-      'Mata kuliah Algoritma Pemrograman - struktur data dasar, sorting, searching.', 'upcoming', 'Meeting pukul 13:00'],
-    ['Basis Data', '🗂️', 'Bapak Rudi Hartono', 20, '90 menit', 'Virtual A-401',
-      'Perancangan basis data relasional, SQL, normalisasi, dan transaction management.', 'upcoming', 'Meeting pukul 15:30'],
-    ['Jaringan Komputer', '🌐', 'Bapak Dimas Pratama', 16, '100 menit', 'Virtual C-101',
-      'Konsep jaringan komputer, TCP/IP, routing, dan network security.', 'idle', ''],
-    ['Kecerdasan Buatan', '🤖', 'Ibu Rina Fitriani', 15, '110 menit', 'Virtual C-201',
-      'Pengantar kecerdasan buatan, machine learning, neural networks.', 'upcoming', 'Meeting pukul 08:00'],
+    ['Dasar Kecerdasan Artifisial', '🧠', 'Bambang Subeno, S.T., M.Kom.', 24, '150 menit', 'Lab A-201',
+      'Konsep dasar kecerdasan buatan, machine learning, dan aplikasinya.', 'upcoming', 'Kelas IF-48-11 • Senin 07:00'],
+    ['Interaksi Manusia Komputer', '🖥️', 'Iwan Abadi, S.Kom., MM., MT., CSCU., CEI', 22, '90 menit', 'Ruang 203',
+      'Perancangan antarmuka, usability, dan evaluasi sistem interaktif.', 'upcoming', 'Kelas IF-48-10 • Rabu 10:30'],
+    ['Jaringan Komputer', '🌐', 'Ghifari Ramadhika Permana, S.Kom., M.Sc.', 20, '200 menit', 'Lab A-201',
+      'Arsitektur jaringan, TCP/IP, routing, switching, dan keamanan jaringan.', 'live', 'Kelas IF-48-10 • Rabu 07:00'],
+    ['Pemrograman Berorientasi Objek', '💻', 'Soni Yora, S.Kom., M.Kom.', 20, '200 menit', 'Lab B-101',
+      'Konsep OOP, inheritance, polymorphism, encapsulation, dan design patterns.', 'upcoming', 'Kelas IF-48-10 • Selasa 07:00'],
+    ['Strategi Algoritma', '📐', 'Fauzan Firdaus, S.Kom., M.T.', 18, '150 menit', 'Ruang 105',
+      'Analisis dan perancangan algoritma, divide & conquer, greedy, dynamic programming.', 'idle', 'Kelas IF-48-04 • Kamis 07:00'],
+    ['Wawasan Global TIK', '🌍', 'Ahmad Bintang Arif, S.Kom., M.Kom.', 16, '100 menit', 'Ruang 105',
+      'Tren dan isu global dalam teknologi informasi dan komunikasi.', 'upcoming', 'Kelas IF-48-10 • Senin 09:40'],
   ];
 
   const insertMany = db.transaction(() => {

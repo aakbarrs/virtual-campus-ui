@@ -88,8 +88,11 @@
   "notif_priority_important": "Importante",
   "notif_priority_normal": "Normal",
   "notif_role_all": "Todos",
+  "view_profile": "Ver Perfil",
   "notif_role_lecturer": "Profesor",
   "notif_role_student": "Estudiante",
+  "dark_mode": "Modo Oscuro",
+  "light_mode": "Modo Claro",
   "notification_detail": "Detalle de Notificación",
   "category": "Categoría",
   "priority_label": "Prioridad",
@@ -98,5 +101,13 @@
   "attachment": "Adjunto",
   "mark_read": "Marcar como Leído",
   "open": "Abrir",
-  "close": "Cerrar"
+  "close": "Cerrar",
+  "course_schedule": "Horario de Clases",
+  "schedule": "Horario",
+  "monday": "Lunes",
+  "tuesday": "Martes",
+  "wednesday": "Miércoles",
+  "thursday": "Jueves",
+  "friday": "Viernes",
+  "no_schedule": "Sin horario"
 }

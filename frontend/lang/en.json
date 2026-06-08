@@ -88,8 +88,11 @@
   "notif_priority_important": "Important",
   "notif_priority_normal": "Normal",
   "notif_role_all": "All",
+  "view_profile": "View Profile",
   "notif_role_lecturer": "Lecturer",
   "notif_role_student": "Student",
+  "dark_mode": "Dark Mode",
+  "light_mode": "Light Mode",
   "notification_detail": "Notification Detail",
   "category": "Category",
   "priority_label": "Priority",
@@ -98,5 +101,13 @@
   "attachment": "Attachment",
   "mark_read": "Mark as Read",
   "open": "Open",
-  "close": "Close"
+  "close": "Close",
+  "course_schedule": "Course Schedule",
+  "schedule": "Schedule",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "no_schedule": "No schedule"
 }
