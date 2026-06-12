@@ -27,6 +27,8 @@
     authToken = null;
     authUser = null;
     localStorage.removeItem('vc_token');
+    localStorage.removeItem('vc_last_screen');
+    localStorage.removeItem('vc_detail_data');
     show('loginScreen', { push: false });
   }
 
@@ -523,12 +525,17 @@
   }
 
   async function handleRegister(name, email, password) {
-    await api('/api/auth/register', {
+    const data = await api('/api/auth/register', {
       method: 'POST',
       body: JSON.stringify({ name, email, password })
     });
-    toast('Akun berhasil dibuat, silakan masuk');
-    show('loginScreen');
+    authToken = data.token;
+    authUser = data.user;
+    localStorage.setItem('vc_token', data.token);
+    updateUserDisplay();
+    await loadDashboard();
+    show('dashboard');
+    toast('Akun berhasil dibuat');
   }
 
   async function loadDashboard() {
@@ -664,6 +671,8 @@
     if (push && history[history.length - 1] !== id) {
       history.push(id);
     }
+
+    localStorage.setItem('vc_last_screen', id);
   }
 
   document.addEventListener("click", (e) => {
@@ -673,7 +682,20 @@
 
     if (target === 'detail') {
       const card = trigger.closest('.class-card');
-      if (card) populateDetail(card);
+      if (card) {
+        populateDetail(card);
+        const data = {
+          title: card.dataset.title,
+          icon: card.dataset.icon,
+          status: card.dataset.status,
+          instructor: card.dataset.instructor,
+          participants: card.dataset.participants,
+          duration: card.dataset.duration,
+          room: card.dataset.room,
+          sub: card.dataset.sub
+        };
+        localStorage.setItem('vc_detail_data', JSON.stringify(data));
+      }
     }
 
     if (target) show(target);
@@ -2167,6 +2189,36 @@
     if (session) {
       startAbsensiTimer();
       updateAbsensiTimer();
+    }
+  })();
+
+  // Restore last screen on page load
+  (function initScreen() {
+    if (!isLoggedIn()) {
+      show('loginScreen', { push: false });
+      return;
+    }
+
+    updateUserDisplay();
+
+    const lastScreen = localStorage.getItem('vc_last_screen');
+    if (lastScreen && document.getElementById(lastScreen) && !['loginScreen','registerScreen','forgotPassword','resetPassword'].includes(lastScreen)) {
+      if (lastScreen === 'dashboard' || lastScreen === 'absensi') {
+        loadDashboard();
+      }
+      if (lastScreen === 'detail') {
+        const saved = localStorage.getItem('vc_detail_data');
+        if (saved) {
+          const data = JSON.parse(saved);
+          const fakeCard = document.createElement('div');
+          Object.entries(data).forEach(([k, v]) => fakeCard.dataset[k] = v);
+          populateDetail(fakeCard);
+        }
+      }
+      show(lastScreen, { push: false });
+    } else {
+      loadDashboard();
+      show('dashboard', { push: false });
     }
   })();
 

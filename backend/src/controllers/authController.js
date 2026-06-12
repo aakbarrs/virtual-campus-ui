@@ -16,12 +16,12 @@ async function register(req, res, next) {
       return res.status(400).json({ error: 'Password minimal 6 karakter' });
     }
     const db = getDb();
-    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    const existing = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
     if (existing) {
       return res.status(409).json({ error: 'Email sudah terdaftar' });
     }
     const hash = await bcrypt.hash(password, 10);
-    const result = db.prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)').run(name, email, hash);
+    const result = await db.prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)').run(name, email, hash);
     const token = jwt.sign({ id: result.lastInsertRowid, email, name }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
     res.status(201).json({
       token,
@@ -39,7 +39,7 @@ async function login(req, res, next) {
       return res.status(400).json({ error: 'Email dan password wajib diisi' });
     }
     const db = getDb();
-    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+    const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(email);
     if (!user) {
       return res.status(401).json({ error: 'Email atau password salah' });
     }
@@ -57,10 +57,10 @@ async function login(req, res, next) {
   }
 }
 
-function me(req, res, next) {
+async function me(req, res, next) {
   try {
     const db = getDb();
-    const user = db.prepare('SELECT id, name, email, avatar, created_at FROM users WHERE id = ?').get(req.user.id);
+    const user = await db.prepare('SELECT id, name, email, avatar, created_at FROM users WHERE id = ?').get(req.user.id);
     if (!user) return res.status(404).json({ error: 'User tidak ditemukan' });
     res.json({ user });
   } catch (err) {
@@ -73,12 +73,12 @@ async function updateProfile(req, res, next) {
     const { name, avatar } = req.body;
     const db = getDb();
     if (name) {
-      db.prepare('UPDATE users SET name = ?, updated_at = datetime("now") WHERE id = ?').run(name, req.user.id);
+      await db.prepare('UPDATE users SET name = ?, updated_at = NOW() WHERE id = ?').run(name, req.user.id);
     }
     if (avatar !== undefined) {
-      db.prepare('UPDATE users SET avatar = ?, updated_at = datetime("now") WHERE id = ?').run(avatar, req.user.id);
+      await db.prepare('UPDATE users SET avatar = ?, updated_at = NOW() WHERE id = ?').run(avatar, req.user.id);
     }
-    const user = db.prepare('SELECT id, name, email, avatar, created_at FROM users WHERE id = ?').get(req.user.id);
+    const user = await db.prepare('SELECT id, name, email, avatar, created_at FROM users WHERE id = ?').get(req.user.id);
     res.json({ user });
   } catch (err) {
     next(err);
@@ -92,12 +92,12 @@ async function forgotPassword(req, res, next) {
       return res.status(400).json({ error: 'Email wajib diisi' });
     }
     const db = getDb();
-    const user = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    const user = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
     // Always return success (security best practice — don't reveal if email exists)
     if (user) {
       const token = crypto.randomBytes(32).toString('hex');
       const expires = new Date(Date.now() + 3600000).toISOString(); // 1 hour
-      db.prepare('UPDATE users SET reset_token = ?, reset_token_expires = ?, updated_at = datetime("now") WHERE id = ?')
+      await db.prepare('UPDATE users SET reset_token = ?, reset_token_expires = ?, updated_at = NOW() WHERE id = ?')
         .run(token, expires, user.id);
     }
     res.json({ message: 'Jika email terdaftar, link reset password telah dikirim' });
@@ -116,7 +116,7 @@ async function resetPassword(req, res, next) {
       return res.status(400).json({ error: 'Password minimal 6 karakter' });
     }
     const db = getDb();
-    const user = db.prepare('SELECT * FROM users WHERE email = ? AND reset_token = ?').get(email, token);
+    const user = await db.prepare('SELECT * FROM users WHERE email = ? AND reset_token = ?').get(email, token);
     if (!user) {
       return res.status(400).json({ error: 'Token reset tidak valid' });
     }
@@ -124,7 +124,7 @@ async function resetPassword(req, res, next) {
       return res.status(400).json({ error: 'Token reset sudah kedaluwarsa' });
     }
     const hash = await bcrypt.hash(password, 10);
-    db.prepare('UPDATE users SET password = ?, reset_token = NULL, reset_token_expires = NULL, updated_at = datetime("now") WHERE id = ?')
+    await db.prepare('UPDATE users SET password = ?, reset_token = NULL, reset_token_expires = NULL, updated_at = NOW() WHERE id = ?')
       .run(hash, user.id);
     res.json({ message: 'Password berhasil direset. Silakan masuk.' });
   } catch (err) {

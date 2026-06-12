@@ -1,6 +1,6 @@
 const { getDb } = require('../config/database');
 
-function list(req, res, next) {
+async function list(req, res, next) {
   try {
     const db = getDb();
     const { filter, search } = req.query;
@@ -22,17 +22,17 @@ function list(req, res, next) {
     }
     sql += ' ORDER BY id ASC';
 
-    const courses = db.prepare(sql).all(...params);
+    const courses = await db.prepare(sql).all(...params);
     res.json({ courses });
   } catch (err) {
     next(err);
   }
 }
 
-function getById(req, res, next) {
+async function getById(req, res, next) {
   try {
     const db = getDb();
-    const course = db.prepare('SELECT * FROM courses WHERE id = ?').get(req.params.id);
+    const course = await db.prepare('SELECT * FROM courses WHERE id = ?').get(req.params.id);
     if (!course) return res.status(404).json({ error: 'Kelas tidak ditemukan' });
     res.json({ course });
   } catch (err) {
@@ -40,14 +40,14 @@ function getById(req, res, next) {
   }
 }
 
-function create(req, res, next) {
+async function create(req, res, next) {
   try {
     const { title, icon, instructor, participants, duration, room, description, status, schedule } = req.body;
     if (!title || !instructor) {
       return res.status(400).json({ error: 'Title dan instructor wajib diisi' });
     }
     const db = getDb();
-    const result = db.prepare(`
+    const result = await db.prepare(`
       INSERT INTO courses (title, icon, instructor, participants, duration, room, description, status, schedule)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
@@ -56,17 +56,17 @@ function create(req, res, next) {
       room || '', description || '',
       status || 'upcoming', schedule || ''
     );
-    const course = db.prepare('SELECT * FROM courses WHERE id = ?').get(result.lastInsertRowid);
+    const course = await db.prepare('SELECT * FROM courses WHERE id = ?').get(result.lastInsertRowid);
     res.status(201).json({ course });
   } catch (err) {
     next(err);
   }
 }
 
-function update(req, res, next) {
+async function update(req, res, next) {
   try {
     const db = getDb();
-    const existing = db.prepare('SELECT * FROM courses WHERE id = ?').get(req.params.id);
+    const existing = await db.prepare('SELECT * FROM courses WHERE id = ?').get(req.params.id);
     if (!existing) return res.status(404).json({ error: 'Kelas tidak ditemukan' });
 
     const fields = ['title', 'icon', 'instructor', 'participants', 'duration', 'room', 'description', 'status', 'schedule'];
@@ -84,22 +84,22 @@ function update(req, res, next) {
       return res.status(400).json({ error: 'Tidak ada field yang diupdate' });
     }
 
-    updates.push('updated_at = datetime("now")');
+    updates.push('updated_at = NOW()');
     params.push(req.params.id);
-    db.prepare(`UPDATE courses SET ${updates.join(', ')} WHERE id = ?`).run(...params);
-    const course = db.prepare('SELECT * FROM courses WHERE id = ?').get(req.params.id);
+    await db.prepare(`UPDATE courses SET ${updates.join(', ')} WHERE id = ?`).run(...params);
+    const course = await db.prepare('SELECT * FROM courses WHERE id = ?').get(req.params.id);
     res.json({ course });
   } catch (err) {
     next(err);
   }
 }
 
-function remove(req, res, next) {
+async function remove(req, res, next) {
   try {
     const db = getDb();
-    const existing = db.prepare('SELECT * FROM courses WHERE id = ?').get(req.params.id);
+    const existing = await db.prepare('SELECT * FROM courses WHERE id = ?').get(req.params.id);
     if (!existing) return res.status(404).json({ error: 'Kelas tidak ditemukan' });
-    db.prepare('DELETE FROM courses WHERE id = ?').run(req.params.id);
+    await db.prepare('DELETE FROM courses WHERE id = ?').run(req.params.id);
     res.json({ message: 'Kelas berhasil dihapus' });
   } catch (err) {
     next(err);

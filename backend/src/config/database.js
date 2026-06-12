@@ -1,159 +1,153 @@
-const path = require('path');
-const fs = require('fs');
+const mysql = require('mysql2/promise');
 
-let db = null;
-let SQL = null;
+let pool = null;
 
-function getDbPath() {
-  const p = process.env.DB_PATH || './data/virtual-campus.db';
-  if (path.isAbsolute(p)) return p;
-  const dir = path.dirname(require.main?.filename || __dirname);
-  return path.resolve(dir, '..', p);
+function getConfig() {
+  return {
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '3306', 10),
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'virtual_campus',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  };
 }
 
-function saveDb() {
-  if (!db) return;
-  const data = db.export();
-  const buffer = Buffer.from(data);
-  const dbPath = getDbPath();
-  const dbDir = path.dirname(dbPath);
-  if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
-  fs.writeFileSync(dbPath, buffer);
+async function ensureDatabase() {
+  const config = getConfig();
+  const conn = await mysql.createConnection({
+    host: config.host,
+    port: config.port,
+    user: config.user,
+    password: config.password
+  });
+  await conn.query(`CREATE DATABASE IF NOT EXISTS \`${config.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+  await conn.end();
 }
 
-async function initSqlJs() {
-  if (SQL) return SQL;
-  const init = require('sql.js');
-  SQL = await init();
-  return SQL;
+async function createPool() {
+  await ensureDatabase();
+  pool = mysql.createPool(getConfig());
 }
 
-function stmtGet(stmt, ...params) {
-  if (params.length) stmt.bind(params);
-  if (stmt.step()) {
-    const row = stmt.getAsObject();
-    stmt.free();
-    return row;
-  }
-  stmt.free();
-  return undefined;
+let query = (sql, params) => pool.execute(sql, params);
+
+function stmtGet(sql, params) {
+  return query(sql, params).then(([rows]) => rows[0]);
 }
 
-function stmtAll(stmt, ...params) {
-  const rows = [];
-  if (params.length) stmt.bind(params);
-  while (stmt.step()) {
-    rows.push(stmt.getAsObject());
-  }
-  stmt.free();
-  return rows;
+function stmtAll(sql, params) {
+  return query(sql, params).then(([rows]) => rows);
 }
 
-function stmtRun(stmt, ...params) {
-  if (params.length) stmt.bind(params);
-  stmt.step();
-  stmt.free();
-  const result = db.exec("SELECT last_insert_rowid() as id");
-  const lastInsertRowid = result?.[0]?.values?.[0]?.[0];
-  return { lastInsertRowid };
+async function stmtRun(sql, params) {
+  const [result] = await query(sql, params);
+  return { lastInsertRowid: result.insertId };
 }
 
 function getDb() {
-  if (!db) throw new Error('Database belum diinisialisasi, panggil initDb() terlebih dahulu');
+  if (!pool) throw new Error('Database belum diinisialisasi, panggil initDb() terlebih dahulu');
   return api;
 }
 
 async function initDb() {
-  const sqlJs = await initSqlJs();
-  const dbPath = getDbPath();
-  if (fs.existsSync(dbPath)) {
-    const buffer = fs.readFileSync(dbPath);
-    db = new sqlJs.Database(buffer);
-  } else {
-    const dbDir = path.dirname(dbPath);
-    if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
-    db = new sqlJs.Database();
-  }
-  db.run('PRAGMA foreign_keys = ON');
-  // Migration: add reset_token columns if upgrading from old schema
-  try { db.run("ALTER TABLE users ADD COLUMN reset_token TEXT DEFAULT NULL"); } catch(e) {}
-  try { db.run("ALTER TABLE users ADD COLUMN reset_token_expires TEXT DEFAULT NULL"); } catch(e) {}
-  db.run(`
+  await createPool();
+
+  await pool.execute(`
     CREATE TABLE IF NOT EXISTS users (
-      id          INTEGER PRIMARY KEY AUTOINCREMENT,
-      name        TEXT    NOT NULL,
-      email       TEXT    NOT NULL UNIQUE,
-      password    TEXT    NOT NULL,
-      avatar      TEXT    DEFAULT NULL,
-      reset_token TEXT    DEFAULT NULL,
-      reset_token_expires TEXT DEFAULT NULL,
-      created_at  TEXT    DEFAULT (datetime('now')),
-      updated_at  TEXT    DEFAULT (datetime('now'))
-    );
-
-    CREATE TABLE IF NOT EXISTS courses (
-      id            INTEGER PRIMARY KEY AUTOINCREMENT,
-      title         TEXT    NOT NULL,
-      icon          TEXT    DEFAULT '📚',
-      instructor    TEXT    NOT NULL,
-      participants  INTEGER DEFAULT 0,
-      duration      TEXT    DEFAULT '90 menit',
-      room          TEXT    DEFAULT '',
-      description   TEXT    DEFAULT '',
-      status        TEXT    DEFAULT 'upcoming' CHECK(status IN ('live','upcoming','idle')),
-      schedule      TEXT    DEFAULT '',
-      created_at    TEXT    DEFAULT (datetime('now')),
-      updated_at    TEXT    DEFAULT (datetime('now'))
-    );
-
-    CREATE TABLE IF NOT EXISTS enrollments (
-      id          INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      course_id   INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
-      role        TEXT    DEFAULT 'student' CHECK(role IN ('student','instructor')),
-      joined_at   TEXT    DEFAULT (datetime('now')),
-      UNIQUE(user_id, course_id)
-    );
-
-    CREATE TABLE IF NOT EXISTS meetings (
-      id          INTEGER PRIMARY KEY AUTOINCREMENT,
-      code        TEXT    NOT NULL UNIQUE,
-      title       TEXT    NOT NULL,
-      host_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      status      TEXT    DEFAULT 'active' CHECK(status IN ('active','ended')),
-      created_at  TEXT    DEFAULT (datetime('now')),
-      ended_at    TEXT    DEFAULT NULL
-    );
+      id          INT AUTO_INCREMENT PRIMARY KEY,
+      name        VARCHAR(255) NOT NULL,
+      email       VARCHAR(255) NOT NULL UNIQUE,
+      password    VARCHAR(255) NOT NULL,
+      avatar      VARCHAR(10) DEFAULT NULL,
+      reset_token VARCHAR(255) DEFAULT NULL,
+      reset_token_expires DATETIME DEFAULT NULL,
+      created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
-  saveDb();
+
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS courses (
+      id            INT AUTO_INCREMENT PRIMARY KEY,
+      title         VARCHAR(255) NOT NULL,
+      icon          VARCHAR(10) DEFAULT '📚',
+      instructor    VARCHAR(255) NOT NULL,
+      participants  INT DEFAULT 0,
+      duration      VARCHAR(50) DEFAULT '90 menit',
+      room          VARCHAR(100) DEFAULT '',
+      description   TEXT DEFAULT NULL,
+      status        ENUM('live','upcoming','idle') DEFAULT 'upcoming',
+      schedule      VARCHAR(255) DEFAULT '',
+      created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS enrollments (
+      id          INT AUTO_INCREMENT PRIMARY KEY,
+      user_id     INT NOT NULL,
+      course_id   INT NOT NULL,
+      role        ENUM('student','instructor') DEFAULT 'student',
+      joined_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE KEY unique_enrollment (user_id, course_id),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS meetings (
+      id          INT AUTO_INCREMENT PRIMARY KEY,
+      code        VARCHAR(10) NOT NULL UNIQUE,
+      title       VARCHAR(255) NOT NULL,
+      host_id     INT NOT NULL,
+      status      ENUM('active','ended') DEFAULT 'active',
+      created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+      ended_at    DATETIME DEFAULT NULL,
+      FOREIGN KEY (host_id) REFERENCES users(id) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
   return api;
 }
 
 const api = {
   prepare(sql) {
     return {
-      get: (...params) => stmtGet(db.prepare(sql), ...params),
-      all: (...params) => stmtAll(db.prepare(sql), ...params),
-      run: (...params) => stmtRun(db.prepare(sql), ...params)
+      get: (...params) => stmtGet(sql, params),
+      all: (...params) => stmtAll(sql, params),
+      run: (...params) => stmtRun(sql, params)
     };
   },
   transaction(fn) {
-    return (...args) => {
-      db.run('BEGIN');
+    return async (...args) => {
+      const conn = await pool.getConnection();
+      const origQuery = query;
+      const origPoolExecute = pool.execute;
+      query = (sql, params) => conn.execute(sql, params);
+      pool.execute = conn.execute.bind(conn);
       try {
-        const result = fn(...args);
-        db.run('COMMIT');
-        saveDb();
+        await conn.beginTransaction();
+        const result = await fn(...args);
+        await conn.commit();
         return result;
       } catch (err) {
-        db.run('ROLLBACK');
+        await conn.rollback();
         throw err;
+      } finally {
+        query = origQuery;
+        pool.execute = origPoolExecute;
+        conn.release();
       }
     };
   },
   exec(sql) {
-    return db.exec(sql);
+    return pool.execute(sql);
   }
 };
 
-module.exports = { getDb, initDb, saveDb };
+module.exports = { getDb, initDb, getConfig };
